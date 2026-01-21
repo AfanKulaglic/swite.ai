@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Registration - WebSphere</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6D28D9',
+                        primaryDark: '#4C1D95',
+                        accent: '#22C55E',
+                        accentSoft: '#86EFAC',
+                        background: '#0F0222',
+                        surface: '#1E0B3A',
+                        muted: '#9CA3AF'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-white font-sans">
+    <!-- Navbar -->
+    <header class="bg-background/80 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto flex items-center justify-between py-6 px-6">
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">W</span>
+                </div>
+                <div class="text-2xl font-bold text-white">WEBSPHERE</div>
+            </a>
+            <ul class="hidden md:flex gap-8 text-muted">
+                <li><a href="index.html" class="hover:text-white transition-colors font-medium">Home</a></li>
+                <li><a href="hosting.html" class="hover:text-white transition-colors font-medium">Hosting</a></li>
+                <li><a href="domains.html" class="text-white font-semibold">Domains</a></li>
+                <li><a href="pricing.html" class="hover:text-white transition-colors font-medium">Pricing</a></li>
+                <li><a href="blog.html" class="hover:text-white transition-colors font-medium">Blog</a></li>
+                <li><a href="contact.html" class="hover:text-white transition-colors font-medium">Contact</a></li>
+            </ul>
+            <div class="flex items-center gap-3">
+                <a href="#" class="hidden md:block text-muted hover:text-white transition-colors font-medium">Sign In</a>
+                <button class="bg-accent text-black px-6 py-2.5 rounded-xl font-semibold hover:bg-accentSoft transition-all shadow-lg shadow-accent/20">
+                    Get Started
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="py-20 px-6 bg-gradient-to-br from-primary to-primaryDark">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-5xl font-bold mb-6">Find Your Perfect Domain</h1>
+            <p class="text-xl text-muted mb-12">
+                Search and register your ideal domain name in seconds
+            </p>
+            
+            <!-- Domain Search -->
+            <div class="flex gap-2 mb-8">
+                <input 
+                    type="text" 
+                    class="flex-1 p-5 rounded-xl text-black text-lg focus:outline-none focus:ring-2 focus:ring-accent" 
+                    placeholder="yourdomain.com" 
+                />
+                <button class="bg-accent text-black px-10 rounded-xl font-semibold hover:bg-accentSoft transition-colors">
+                    Search
+                </button>
+            </div>
+            
+            <div class="flex justify-center gap-6 text-sm flex-wrap">
+                <span class="text-muted">.com <span class="text-white font-semibold">$12.99/year</span></span>
+                <span class="text-muted">.net <span class="text-white font-semibold">$14.99/year</span></span>
+                <span class="text-muted">.org <span class="text-white font-semibold">$13.99/year</span></span>
+                <span class="text-muted">.io <span class="text-white font-semibold">$39.99/year</span></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular TLDs -->
+    <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-16">Popular Domain Extensions</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-surface/50 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold">.com</span>
+                        <span class="text-accent text-xl font-bold">$12.99</span>
+                    </div>
+                    <p class="text-muted text-sm mb-4">Most popular and trusted extension</p>
+                    <button class="w-full bg-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/20 transition-colors">
+                        Register Now
+                    </button>
+                </div>
+
+                <div class="bg-surface/50 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold">.net</span>
+                        <span class="text-accent text-xl font-bold">$14.99</span>
+                    </div>
+                    <p class="text-muted text-sm mb-4">Great for tech and network sites</p>
+                    <button class="w-full bg-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/20 transition-colors">
+                        Register Now
+                    </button>
+                </div>
+
+                <div class="bg-surface/50 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold">.org</span>
+                        <span class="text-accent text-xl font-bold">$13.99</span>
+                    </div>
+                    <p class="text-muted text-sm mb-4">Perfect for organizations</p>
+                    <button class="w-full bg-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/20 transition-colors">
+                        Register Now
+                    </button>
+                </div>
+
+                <div class="bg-surface/50 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold">.io</span>
+                        <span class="text-accent text-xl font-bold">$39.99</span>
+                    </div>
+                    <p class="text-muted text-sm mb-4">Popular with startups</p>
+                    <button class="w-full bg-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/20 transition-colors">
+                        Register Now
+                    </button>
+                </div>
+
+                <div class="bg-surface/50 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold">.co</span>
+                        <span class="text-accent text-xl font-bold">$24.99</span>
+                    </div>
+                    <p class="text-muted text-sm mb-4">Modern alternative to .com</p>
+                    <button class="w-full bg-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/20 transition-colors">
+                        Register Now
+                    </button>
+                </div>
+
+                <div class="bg-surface/50 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl font-bold">.dev</span>
+                        <span class="text-accent text-xl font-bold">$14.99</span>
+                    </div>
+                    <p class="text-muted text-sm mb-4">For developers and tech</p>
+                    <button class="w-full bg-white/10 text-white px-4 py-2 rounded-lg hover:bg-white/20 transition-colors">
+                        Register Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-20 px-6 bg-surface/30">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-16">Domain Features</h2>
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="text-center">
+                    <div class="text-5xl mb-4">🔒</div>
+                    <h4 class="text-xl font-semibold mb-3">Free Privacy Protection</h4>
+                    <p class="text-muted">Keep your personal information private</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-5xl mb-4">🔄</div>
+                    <h4 class="text-xl font-semibold mb-3">Easy Transfer</h4>
+                    <p class="text-muted">Transfer your domains hassle-free</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-5xl mb-4">⚡</div>
+                    <h4 class="text-xl font-semibold mb-3">Instant Activation</h4>
+                    <p class="text-muted">Your domain is ready immediately</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-surface/50 border-t border-white/10 py-12 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="text-2xl font-bold mb-4">WEBSPHERE</div>
+            <p class="text-muted mb-6">Premium web hosting solutions</p>
+            <div class="flex justify-center gap-8 text-sm text-muted">
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
+            </div>
+            <p class="mt-6 text-sm text-muted">© 2024 WebSphere. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
