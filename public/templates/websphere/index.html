@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSphere - Premium Web Hosting & Cloud Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6D28D9',
+                        primaryDark: '#4C1D95',
+                        accent: '#22C55E',
+                        accentSoft: '#86EFAC',
+                        background: '#0F0222',
+                        surface: '#1E0B3A',
+                        muted: '#9CA3AF'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-white font-sans antialiased">
+    <!-- Navbar -->
+    <header class="bg-background/80 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto flex items-center justify-between py-6 px-6">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-xl">W</span>
+                </div>
+                <div class="text-2xl font-bold text-white">WEBSPHERE</div>
+            </div>
+            <ul class="hidden md:flex gap-8 text-muted">
+                <li><a href="index.html" class="hover:text-white transition-colors font-medium">Home</a></li>
+                <li><a href="hosting.html" class="hover:text-white transition-colors font-medium">Hosting</a></li>
+                <li><a href="domains.html" class="hover:text-white transition-colors font-medium">Domains</a></li>
+                <li><a href="pricing.html" class="hover:text-white transition-colors font-medium">Pricing</a></li>
+                <li><a href="blog.html" class="hover:text-white transition-colors font-medium">Blog</a></li>
+                <li><a href="contact.html" class="hover:text-white transition-colors font-medium">Contact</a></li>
+            </ul>
+            <div class="flex items-center gap-3">
+                <a href="#" class="hidden md:block text-muted hover:text-white transition-colors font-medium">Sign In</a>
+                <button class="bg-accent text-black px-6 py-2.5 rounded-xl font-semibold hover:bg-accentSoft transition-all shadow-lg shadow-accent/20">
+                    Get Started
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-background via-primaryDark to-background py-32 overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-20 left-20 w-96 h-96 bg-primary rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-20 right-20 w-96 h-96 bg-accent rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 px-6 items-center relative z-10">
+            <div class="hero-content">
+                <div class="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 rounded-full px-4 py-2 mb-6">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+                    </span>
+                    <span class="text-accent text-sm font-semibold">🚀 Limited Offer: 50% OFF First Year</span>
+                </div>
+                <h1 class="text-6xl md:text-7xl font-extrabold leading-tight mb-6">
+                    Host Your Site with <span class="bg-gradient-to-r from-accent to-green-400 bg-clip-text text-transparent">Top-Tier Reliability</span>
+                </h1>
+                <p class="text-xl text-gray-300 leading-relaxed mb-8">
+                    Enterprise-grade web hosting solutions designed for your success. Lightning-fast performance, military-grade security, and 24/7 expert support included.
+                </p>
+                <div class="flex flex-wrap gap-4 mb-12">
+                    <a href="pricing.html" class="bg-accent text-black px-8 py-4 rounded-xl font-semibold hover:bg-accentSoft transition-all inline-flex items-center gap-2 shadow-xl shadow-accent/30 hover:shadow-accent/50 hover:scale-105">
+                        Get Started Now
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        </svg>
+                    </a>
+                    <a href="pricing.html" class="border-2 border-accent text-accent px-8 py-4 rounded-xl font-semibold hover:bg-accent hover:text-black transition-all inline-flex items-center gap-2">
+                        View Pricing
+                    </a>
+                </div>
+                <div class="grid grid-cols-3 gap-8">
+                    <div class="text-center md:text-left">
+                        <div class="text-4xl font-bold text-white mb-1">99.9%</div>
+                        <div class="text-sm text-gray-400">Uptime SLA</div>
+                    </div>
+                    <div class="text-center md:text-left">
+                        <div class="text-4xl font-bold text-white mb-1">24/7</div>
+                        <div class="text-sm text-gray-400">Support</div>
+                    </div>
+                    <div class="text-center md:text-left">
+                        <div class="text-4xl font-bold text-white mb-1">50K+</div>
+                        <div class="text-sm text-gray-400">Happy Clients</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="relative">
+                    <div class="bg-gradient-to-br from-surface/80 to-surface/40 backdrop-blur-sm border border-white/10 rounded-2xl p-8 shadow-2xl">
+                        <img 
+                            src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80" 
+                            alt="Modern Server Infrastructure" 
+                            class="rounded-xl w-full shadow-2xl"
+                        />
+                    </div>
+                    <!-- Floating Stats -->
+                    <div class="absolute -bottom-6 -left-6 bg-gradient-to-br from-surface to-surface/80 border border-white/10 rounded-xl p-4 shadow-2xl backdrop-blur-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-gradient-to-br from-accent/20 to-accent/10 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">⚡</span>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-400">Load Time</div>
+                                <div class="text-xl font-bold text-white">0.8s</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -top-6 -right-6 bg-gradient-to-br from-surface to-surface/80 border border-white/10 rounded-xl p-4 shadow-2xl backdrop-blur-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center">
+                                <span class="text-2xl">🔒</span>
+                            </div>
+                            <div>
+                                <div class="text-xs text-gray-400">SSL Secure</div>
+                                <div class="text-xl font-bold text-white">Free</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Badges -->
+    <section class="py-16 bg-surface/30 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <p class="text-center text-gray-400 text-sm mb-10 uppercase tracking-wider font-semibold">Trusted by 50,000+ Companies Worldwide</p>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-8 items-center">
+                <div class="text-center text-2xl font-bold text-white/40 hover:text-white/60 transition-colors">TechCorp</div>
+                <div class="text-center text-2xl font-bold text-white/40 hover:text-white/60 transition-colors">StartupHub</div>
+                <div class="text-center text-2xl font-bold text-white/40 hover:text-white/60 transition-colors">CloudBase</div>
+                <div class="text-center text-2xl font-bold text-white/40 hover:text-white/60 transition-colors">DevStudio</div>
+                <div class="text-center text-2xl font-bold text-white/40 hover:text-white/60 transition-colors">WebFlow</div>
+                <div class="text-center text-2xl font-bold text-white/40 hover:text-white/60 transition-colors">DataSync</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 px-6 bg-gradient-to-b from-background to-primary/20">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-accent text-sm font-bold uppercase tracking-wider">Features</span>
+                <h2 class="text-5xl md:text-6xl font-extrabold mb-6 mt-3">Why Choose WebSphere?</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">Everything you need for a successful online presence, backed by industry-leading technology</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 hover:border-accent/50 transition-all">
+                    <div class="w-16 h-16 bg-accent/20 rounded-xl flex items-center justify-center mb-6">
+                        <span class="text-4xl">⚡</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Lightning Fast</h3>
+                    <p class="text-gray-400 mb-4">NVMe SSD storage and global CDN integration for blazing fast load times.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> NVMe SSD Storage
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> Global CDN Network
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> HTTP/3 Support
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 hover:border-accent/50 transition-all">
+                    <div class="w-16 h-16 bg-primary/20 rounded-xl flex items-center justify-center mb-6">
+                        <span class="text-4xl">🔒</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Secure & Safe</h3>
+                    <p class="text-gray-400 mb-4">Military-grade security with free SSL certificates and automated daily backups.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> Free SSL Certificate
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> Daily Backups
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> DDoS Protection
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 hover:border-accent/50 transition-all">
+                    <div class="w-16 h-16 bg-accent/20 rounded-xl flex items-center justify-center mb-6">
+                        <span class="text-4xl">📈</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Infinitely Scalable</h3>
+                    <p class="text-gray-400 mb-4">Grow your site with flexible hosting plans. Seamlessly upgrade as you expand.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> Instant Upgrades
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> Auto-Scaling
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> Load Balancing
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 hover:border-accent/50 transition-all">
+                    <div class="w-16 h-16 bg-primary/20 rounded-xl flex items-center justify-center mb-6">
+                        <span class="text-4xl">💬</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">24/7 Expert Support</h3>
+                    <p class="text-gray-400 mb-4">Award-winning support team available around the clock. Get help anytime.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> Live Chat Support
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> Phone Support
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> Email Tickets
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 hover:border-accent/50 transition-all">
+                    <div class="w-16 h-16 bg-accent/20 rounded-xl flex items-center justify-center mb-6">
+                        <span class="text-4xl">🎯</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">99.9% Uptime</h3>
+                    <p class="text-gray-400 mb-4">Industry-leading uptime guarantee backed by SLA. Your site stays online.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> SLA Guarantee
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> Redundant Servers
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> 24/7 Monitoring
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-8 hover:bg-white/10 hover:border-accent/50 transition-all">
+                    <div class="w-16 h-16 bg-primary/20 rounded-xl flex items-center justify-center mb-6">
+                        <span class="text-4xl">🚀</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Easy Setup</h3>
+                    <p class="text-gray-400 mb-4">Get your site online in minutes with one-click install. No technical knowledge required.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> 1-Click WordPress
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> Website Builder
+                        </li>
+                        <li class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="text-accent">✓</span> Free Migration
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Metrics -->
+    <section class="py-24 px-6 bg-gradient-to-br from-primary via-primaryDark to-primary relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-4">Trusted by Industry Leaders</h2>
+                <p class="text-xl text-gray-200">Join thousands of successful businesses worldwide</p>
+            </div>
+            <div class="grid md:grid-cols-4 gap-8 text-center">
+                <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:bg-white/15 transition-all">
+                    <div class="text-5xl md:text-6xl font-extrabold text-white mb-2">50,000+</div>
+                    <div class="text-lg text-gray-200 font-medium">Active Websites</div>
+                    <p class="text-sm text-gray-300 mt-2">Hosted globally</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:bg-white/15 transition-all">
+                    <div class="text-5xl md:text-6xl font-extrabold text-white mb-2">99.9%</div>
+                    <div class="text-lg text-gray-200 font-medium">Uptime Guarantee</div>
+                    <p class="text-sm text-gray-300 mt-2">SLA backed</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:bg-white/15 transition-all">
+                    <div class="text-5xl md:text-6xl font-extrabold text-white mb-2">24/7</div>
+                    <div class="text-lg text-gray-200 font-medium">Expert Support</div>
+                    <p class="text-sm text-gray-300 mt-2">Always available</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:bg-white/15 transition-all">
+                    <div class="text-5xl md:text-6xl font-extrabold text-white mb-2">15+</div>
+                    <div class="text-lg text-gray-200 font-medium">Years Experience</div>
+                    <p class="text-sm text-gray-300 mt-2">Industry leader</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hosting Plans Preview -->
+    <section class="py-32 px-6 bg-background">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <span class="text-accent text-sm font-bold uppercase tracking-wider">Pricing</span>
+                <h2 class="text-5xl md:text-6xl font-extrabold mb-6 mt-3">Choose Your Perfect Plan</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">Flexible hosting solutions for every need. Start small and scale as you grow.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <!-- Starter Plan -->
+                <div class="bg-surface/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <div class="text-sm font-bold text-accent uppercase tracking-wider mb-4">Starter</div>
+                    <div class="mb-6">
+                        <span class="text-5xl font-extrabold text-white">$4.99</span>
+                        <span class="text-gray-400">/month</span>
+                    </div>
+                    <p class="text-gray-400 mb-6">Perfect for personal websites and blogs</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-2 text-gray-300">
+                            <span class="text-accent">✓</span> 10 GB SSD Storage
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-300">
+                            <span class="text-accent">✓</span> 1 Website
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-300">
+                            <span class="text-accent">✓</span> Free SSL Certificate
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-300">
+                            <span class="text-accent">✓</span> 24/7 Support
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-300">
+                            <span class="text-accent">✓</span> Daily Backups
+                        </li>
+                    </ul>
+                    <a href="pricing.html" class="block w-full text-center bg-white/5 border border-white/10 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/10 transition-all">
+                        Get Started
+                    </a>
+                </div>
+
+                <!-- Business Plan (Popular) -->
+                <div class="bg-gradient-to-br from-primary/20 to-accent/20 backdrop-blur-sm border-2 border-accent rounded-2xl p-8 relative transform scale-105 shadow-2xl shadow-accent/20">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-accent text-black px-4 py-1 rounded-full text-sm font-bold">
+                        MOST POPULAR
+                    </div>
+                    <div class="text-sm font-bold text-accent uppercase tracking-wider mb-4">Business</div>
+                    <div class="mb-6">
+                        <span class="text-5xl font-extrabold text-white">$9.99</span>
+                        <span class="text-gray-300">/month</span>
+                    </div>
+                    <p class="text-gray-300 mb-6">Ideal for growing businesses and e-commerce</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-2 text-white">
+                            <span class="text-accent">✓</span> 50 GB SSD Storage
+                        </li>
+                        <li class="flex items-center gap-2 text-white">
+                            <span class="text-accent">✓</span> Unlimited Websites
+                        </li>
+                        <li class="flex items-center gap-2 text-white">
+                            <span class="text-accent">✓</span> Free SSL Certificate
+                        </li>
+                        <li class="flex items-center gap-2 text-white">
+                            <span class="text-accent">✓</span> Priority Support
+                        </li>
+                        <li class="flex items-center gap-2 text-white">
+                            <span class="text-accent">✓</span> Daily Backups
+                        </li>
+                        <li class="flex items-center gap-2 text-white">
+                            <span class="text-accent">✓</span> Free CDN
+                        </li>
+                    </ul>
+                    <a href="pricing.html" class="block w-full text-center bg-accent text-black px-6 py-3 rounded-xl font-semibold hover:bg-accentSoft transition-all shadow-lg">
+                        Get Started
+                    </a>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="bg-surface/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <div class="text-sm font-bold text-accent uppercase tracking-wider mb-4">Enterprise</div>
+                    <div class="mb-6">
+                        <span class="text-5xl font-extrabold text-white">$24.99</span>
+                        <span class="text-gray-400">/month</span>
+                    </div>
+                    <p class="text-gray-400 mb-6">Maximum performance for high-traffic sites</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-2 text-gray-300">
+                            <span class="text-accent">✓</span> 200 GB SSD Storage
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-300">
+                            <span class="text-accent">✓</span> Unlimited Websites
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-300">
+                            <span class="text-accent">✓</span> Free SSL Certificate
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-300">
+                            <span class="text-accent">✓</span> VIP Support
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-300">
+                            <span class="text-accent">✓</span> Hourly Backups
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-300">
+                            <span class="text-accent">✓</span> Free CDN + WAF
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-300">
+                            <span class="text-accent">✓</span> Dedicated IP
+                        </li>
+                    </ul>
+                    <a href="pricing.html" class="block w-full text-center bg-white/5 border border-white/10 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/10 transition-all">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="pricing.html" class="inline-flex items-center gap-2 text-accent hover:text-accentSoft transition-colors font-semibold">
+                    View All Plans & Features
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Domain Search -->
+    <section class="py-32 px-6 bg-gradient-to-br from-primary via-primaryDark to-primary relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-20 left-20 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-20 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <span class="text-accent text-sm font-bold uppercase tracking-wider">Domain Registration</span>
+            <h2 class="text-5xl md:text-6xl font-extrabold mb-6 mt-3">Find Your Perfect Domain</h2>
+            <p class="text-xl text-gray-200 mb-12">Search and register your ideal domain name today. Over 400+ extensions available with instant activation.</p>
+            <div class="flex gap-3 mb-10">
+                <input 
+                    type="text" 
+                    class="flex-1 p-5 rounded-xl text-black text-lg focus:outline-none focus:ring-4 focus:ring-accent/50 shadow-xl" 
+                    placeholder="yourdomain.com" 
+                />
+                <button class="bg-accent text-black px-12 rounded-xl font-bold hover:bg-accentSoft transition-all text-lg shadow-xl hover:shadow-2xl hover:scale-105">
+                    Search
+                </button>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 hover:bg-white/15 transition-all">
+                    <span class="text-gray-200">.com from</span>
+                    <span class="text-white font-bold ml-2">$12.99/yr</span>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 hover:bg-white/15 transition-all">
+                    <span class="text-gray-200">.net from</span>
+                    <span class="text-white font-bold ml-2">$14.99/yr</span>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 hover:bg-white/15 transition-all">
+                    <span class="text-gray-200">.org from</span>
+                    <span class="text-white font-bold ml-2">$13.99/yr</span>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 hover:bg-white/15 transition-all">
+                    <span class="text-gray-200">.io from</span>
+                    <span class="text-white font-bold ml-2">$39.99/yr</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-32 px-6 bg-surface/30">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <span class="text-accent text-sm font-bold uppercase tracking-wider">Testimonials</span>
+                <h2 class="text-5xl md:text-6xl font-extrabold mb-6 mt-3">What Our Clients Say</h2>
+                <p class="text-xl text-gray-300">Join thousands of satisfied customers worldwide who trust WebSphere</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <div class="flex items-center gap-1 mb-6">
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed mb-6 text-lg">
+                        "WebSphere has been hosting our company website for 3 years. The uptime is incredible and support team is always helpful. Highly recommended!"
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://i.pravatar.cc/150?img=12" alt="John Smith" class="w-14 h-14 rounded-full border-2 border-accent/30">
+                        <div>
+                            <div class="font-bold text-white text-lg">John Smith</div>
+                            <div class="text-sm text-gray-400">CEO, TechCorp</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <div class="flex items-center gap-1 mb-6">
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed mb-6 text-lg">
+                        "Switched from another host and couldn't be happier. The migration was seamless and the performance improvement is noticeable. Great value!"
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://i.pravatar.cc/150?img=45" alt="Sarah Johnson" class="w-14 h-14 rounded-full border-2 border-accent/30">
+                        <div>
+                            <div class="font-bold text-white text-lg">Sarah Johnson</div>
+                            <div class="text-sm text-gray-400">Founder, StartupHub</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <div class="flex items-center gap-1 mb-6">
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed mb-6 text-lg">
+                        "Best hosting provider I've used. Fast servers, excellent support, and competitive pricing. My clients' websites load incredibly fast now."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://i.pravatar.cc/150?img=33" alt="Mike Chen" class="w-14 h-14 rounded-full border-2 border-accent/30">
+                        <div>
+                            <div class="font-bold text-white text-lg">Mike Chen</div>
+                            <div class="text-sm text-gray-400">Web Developer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <div class="flex items-center gap-1 mb-6">
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed mb-6 text-lg">
+                        "Outstanding service! Our e-commerce site handles thousands of visitors daily without any issues. The auto-scaling feature is a game-changer."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://i.pravatar.cc/150?img=28" alt="Emily Rodriguez" class="w-14 h-14 rounded-full border-2 border-accent/30">
+                        <div>
+                            <div class="font-bold text-white text-lg">Emily Rodriguez</div>
+                            <div class="text-sm text-gray-400">Owner, ShopStyle</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <div class="flex items-center gap-1 mb-6">
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed mb-6 text-lg">
+                        "The one-click WordPress installation saved me hours. Support team helped me migrate 5 websites in one day. Absolutely fantastic experience!"
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://i.pravatar.cc/150?img=51" alt="David Park" class="w-14 h-14 rounded-full border-2 border-accent/30">
+                        <div>
+                            <div class="font-bold text-white text-lg">David Park</div>
+                            <div class="text-sm text-gray-400">Blogger</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <div class="flex items-center gap-1 mb-6">
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                        <span class="text-yellow-400 text-2xl">★</span>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed mb-6 text-lg">
+                        "Security features are top-notch. Free SSL, daily backups, and DDoS protection give me peace of mind. Worth every penny!"
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <img src="https://i.pravatar.cc/150?img=67" alt="Lisa Anderson" class="w-14 h-14 rounded-full border-2 border-accent/30">
+                        <div>
+                            <div class="font-bold text-white text-lg">Lisa Anderson</div>
+                            <div class="text-sm text-gray-400">Marketing Director</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-32 px-6 bg-background">
+        <div class="max-w-5xl mx-auto">
+            <div class="bg-gradient-to-br from-primary via-primaryDark to-primary rounded-3xl p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
+                <div class="absolute inset-0 opacity-20">
+                    <div class="absolute top-0 left-0 w-96 h-96 bg-accent rounded-full blur-3xl animate-pulse"></div>
+                    <div class="absolute bottom-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+                </div>
+                <div class="relative z-10">
+                    <span class="inline-block bg-accent/20 border border-accent/30 rounded-full px-5 py-2 text-accent text-sm font-bold mb-8">
+                        🎉 Limited Time Offer - 50% OFF
+                    </span>
+                    <h2 class="text-5xl md:text-6xl font-extrabold mb-6">Ready to Get Started?</h2>
+                    <p class="text-xl text-gray-200 mb-12 max-w-2xl mx-auto leading-relaxed">
+                        Join thousands of satisfied customers today. Get 50% off your first year with any annual plan. No credit card required to start.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4 mb-8">
+                        <a href="pricing.html" class="bg-accent text-black px-12 py-5 rounded-xl font-bold text-lg hover:bg-accentSoft transition-all inline-flex items-center gap-2 shadow-2xl shadow-accent/30 hover:scale-105">
+                            View Pricing Plans
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </a>
+                        <a href="contact.html" class="bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white px-12 py-5 rounded-xl font-bold text-lg hover:bg-white/20 transition-all inline-flex items-center gap-2">
+                            Contact Sales
+                        </a>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-6 text-sm text-gray-200">
+                        <div class="flex items-center gap-2">
+                            <span class="text-accent">✓</span> No credit card required
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-accent">✓</span> 30-day money-back guarantee
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-accent">✓</span> Cancel anytime
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-32 px-6 bg-surface/30">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-20">
+                <span class="text-accent text-sm font-bold uppercase tracking-wider">FAQ</span>
+                <h2 class="text-5xl md:text-6xl font-extrabold mb-6 mt-3">Frequently Asked Questions</h2>
+                <p class="text-xl text-gray-300">Everything you need to know about our hosting services</p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <h4 class="text-xl font-bold mb-4 text-white flex items-center gap-3">
+                        <span class="text-accent">Q:</span>
+                        What is included in the hosting plans?
+                    </h4>
+                    <p class="text-gray-300 leading-relaxed pl-8">All our hosting plans include free SSL certificates, daily automated backups, 24/7 expert support, 99.9% uptime guarantee, and one-click WordPress installation. You also get access to our intuitive control panel, email hosting, and unlimited bandwidth.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <h4 class="text-xl font-bold mb-4 text-white flex items-center gap-3">
+                        <span class="text-accent">Q:</span>
+                        Can I upgrade my plan later?
+                    </h4>
+                    <p class="text-gray-300 leading-relaxed pl-8">Yes, you can upgrade or downgrade your plan at any time with just a few clicks. Changes take effect immediately, and we'll prorate the cost difference. There are no penalties or hidden fees for changing plans.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <h4 class="text-xl font-bold mb-4 text-white flex items-center gap-3">
+                        <span class="text-accent">Q:</span>
+                        Do you offer a money-back guarantee?
+                    </h4>
+                    <p class="text-gray-300 leading-relaxed pl-8">Yes, we offer a 30-day money-back guarantee on all plans. If you're not satisfied with our service for any reason, contact us within 30 days for a full refund. No questions asked, no hassle.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <h4 class="text-xl font-bold mb-4 text-white flex items-center gap-3">
+                        <span class="text-accent">Q:</span>
+                        How do I migrate my existing website?
+                    </h4>
+                    <p class="text-gray-300 leading-relaxed pl-8">We offer free website migration for all new customers. Our expert team will handle the entire migration process for you, ensuring zero downtime and data integrity. Just contact our support team with your current hosting details to get started.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <h4 class="text-xl font-bold mb-4 text-white flex items-center gap-3">
+                        <span class="text-accent">Q:</span>
+                        What payment methods do you accept?
+                    </h4>
+                    <p class="text-gray-300 leading-relaxed pl-8">We accept all major credit cards (Visa, MasterCard, American Express, Discover), PayPal, and bank transfers for annual plans. All payments are processed securely through our encrypted payment gateway with PCI DSS compliance.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <h4 class="text-xl font-bold mb-4 text-white flex items-center gap-3">
+                        <span class="text-accent">Q:</span>
+                        Is my data backed up automatically?
+                    </h4>
+                    <p class="text-gray-300 leading-relaxed pl-8">Yes, we perform daily automated backups of all your data. Business and Enterprise plans include more frequent backups. You can restore your website to any previous backup point with one click from your control panel.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <h4 class="text-xl font-bold mb-4 text-white flex items-center gap-3">
+                        <span class="text-accent">Q:</span>
+                        What kind of support do you provide?
+                    </h4>
+                    <p class="text-gray-300 leading-relaxed pl-8">We provide 24/7 support through live chat, email tickets, and phone. Our expert support team has an average response time of under 2 minutes for live chat and under 1 hour for email tickets. We also have extensive documentation and video tutorials.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-surface/50 to-surface/30 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-accent/50 transition-all">
+                    <h4 class="text-xl font-bold mb-4 text-white flex items-center gap-3">
+                        <span class="text-accent">Q:</span>
+                        Can I host multiple websites on one plan?
+                    </h4>
+                    <p class="text-gray-300 leading-relaxed pl-8">The Starter plan supports 1 website, while Business and Enterprise plans support unlimited websites. You can host as many domains as you need on a single account with our higher-tier plans.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-surface/50 border-t border-white/10 py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-5 gap-12 mb-16">
+                <!-- Company Info -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">W</span>
+                        </div>
+                        <div class="text-3xl font-bold">WEBSPHERE</div>
+                    </div>
+                    <p class="text-gray-400 mb-6 leading-relaxed">
+                        Premium web hosting solutions for businesses of all sizes. Fast, secure, and reliable hosting since 2009. Trusted by over 50,000 customers worldwide.
+                    </p>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-11 h-11 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/10 hover:border-accent/50 transition-all">
+                            <span class="text-lg">𝕏</span>
+                        </a>
+                        <a href="#" class="w-11 h-11 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/10 hover:border-accent/50 transition-all">
+                            <span class="text-lg">f</span>
+                        </a>
+                        <a href="#" class="w-11 h-11 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/10 hover:border-accent/50 transition-all">
+                            <span class="text-lg">in</span>
+                        </a>
+                        <a href="#" class="w-11 h-11 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center hover:bg-white/10 hover:border-accent/50 transition-all">
+                            <span class="text-lg">📷</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Products -->
+                <div>
+                    <h4 class="font-bold text-white mb-6 text-lg">Products</h4>
+                    <ul class="space-y-3">
+                        <li><a href="hosting.html" class="text-gray-400 hover:text-accent transition-colors">Web Hosting</a></li>
+                        <li><a href="hosting.html" class="text-gray-400 hover:text-accent transition-colors">VPS Hosting</a></li>
+                        <li><a href="hosting.html" class="text-gray-400 hover:text-accent transition-colors">Dedicated Servers</a></li>
+                        <li><a href="domains.html" class="text-gray-400 hover:text-accent transition-colors">Domain Names</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">SSL Certificates</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">Email Hosting</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company -->
+                <div>
+                    <h4 class="font-bold text-white mb-6 text-lg">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">About Us</a></li>
+                        <li><a href="blog.html" class="text-gray-400 hover:text-accent transition-colors">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">Partners</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-accent transition-colors">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">Affiliate Program</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div>
+                    <h4 class="font-bold text-white mb-6 text-lg">Support</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">System Status</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-accent transition-colors">Contact Support</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">Report Abuse</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-accent transition-colors">Community Forum</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="pt-8 border-t border-white/5">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-sm text-gray-400">© 2024 WebSphere. All rights reserved. Made with ❤️ for the web.</p>
+                    <div class="flex gap-6 text-sm text-gray-400">
+                        <a href="#" class="hover:text-accent transition-colors">Privacy Policy</a>
+                        <a href="#" class="hover:text-accent transition-colors">Terms of Service</a>
+                        <a href="#" class="hover:text-accent transition-colors">Cookie Policy</a>
+                        <a href="#" class="hover:text-accent transition-colors">GDPR</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GSAP Animations -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero animations
+        gsap.from(".hero-content > *", {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            stagger: 0.15,
+            ease: "power3.out"
+        });
+
+        gsap.from(".hero-image", {
+            opacity: 0,
+            x: 50,
+            duration: 1,
+            delay: 0.3,
+            ease: "power3.out"
+        });
+
+        // Feature cards animation
+        gsap.from(".feature-card", {
+            scrollTrigger: {
+                trigger: ".features-grid",
+                start: "top 80%"
+            },
+            opacity: 0,
+            y: 50,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "power3.out"
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
