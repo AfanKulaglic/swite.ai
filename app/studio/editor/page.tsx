@@ -8,9 +8,10 @@ type DeviceType = 'desktop' | 'tablet' | 'mobile';
 interface SelectedElement {
   selector: string;
   content: string;
-  type: 'heading' | 'text' | 'button' | 'link' | 'gradient-text' | 'span' | 'div' | 'li';
+  type: 'heading' | 'text' | 'button' | 'link' | 'gradient-text' | 'span' | 'div' | 'li' | 'image';
   href?: string;
   src?: string;
+  alt?: string;
 }
 
 interface Section {
@@ -37,12 +38,14 @@ export default function EditorPage() {
   const [editValue, setEditValue] = useState('');
   const [editHref, setEditHref] = useState('');
   const [editSrc, setEditSrc] = useState('');
+  const [editAlt, setEditAlt] = useState('');
   const [showEditPanel, setShowEditPanel] = useState(false);
   const [showSectionManager, setShowSectionManager] = useState(false);
   const [sections, setSections] = useState<Section[]>([]);
   const [savedEdits, setSavedEdits] = useState<Record<string, any>>({});
   const [showSuccess, setShowSuccess] = useState(false);
   const [showPublishModal, setShowPublishModal] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Load saved edits from localStorage
   useEffect(() => {
@@ -74,6 +77,9 @@ export default function EditorPage() {
           if (data.src !== undefined && 'src' in element) {
             (element as HTMLImageElement).src = data.src;
           }
+          if (data.alt !== undefined && 'alt' in element) {
+            (element as HTMLImageElement).alt = data.alt;
+          }
         }
       });
 
@@ -85,7 +91,8 @@ export default function EditorPage() {
         'span.bg-clip-text',
         'span:not(.bg-gradient-to-r):not(.bg-clip-text)',
         'div.text-4xl', 'div.text-sm',
-        'li'
+        'li',
+        'img' // Add images
       ];
 
       editableSelectors.forEach(selector => {
@@ -174,6 +181,8 @@ export default function EditorPage() {
       type = 'button';
     } else if (tagName === 'a') {
       type = 'link';
+    } else if (tagName === 'img') {
+      type = 'image';
     } else if (element.classList.contains('bg-gradient-to-r') || element.classList.contains('bg-clip-text')) {
       type = 'gradient-text';
     } else if (tagName === 'span') {
@@ -187,11 +196,13 @@ export default function EditorPage() {
     const content = element.textContent || '';
     const href = (element as HTMLAnchorElement).href || '';
     const src = (element as HTMLImageElement).src || '';
+    const alt = (element as HTMLImageElement).alt || '';
 
-    setSelectedElement({ selector, content, type, href, src });
+    setSelectedElement({ selector, content, type, href, src, alt });
     setEditValue(content);
     setEditHref(href ? new URL(href).pathname : '');
     setEditSrc(src);
+    setEditAlt(alt);
     setShowEditPanel(true);
 
     // Highlight selected element
@@ -210,6 +221,31 @@ export default function EditorPage() {
     }
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file');
+      return;
+    }
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size must be less than 5MB');
+      return;
+    }
+
+    // Convert to base64
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target?.result as string;
+      setEditSrc(base64);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleUpdate = () => {
     if (!selectedElement) return;
 
@@ -222,8 +258,8 @@ export default function EditorPage() {
     const element = iframeDoc.querySelector(selectedElement.selector);
     if (!element) return;
 
-    // Update content
-    if (editValue !== selectedElement.content) {
+    // Update content for text elements
+    if (selectedElement.type !== 'image' && editValue !== selectedElement.content) {
       element.textContent = editValue;
     }
 
@@ -232,18 +268,24 @@ export default function EditorPage() {
       (element as HTMLAnchorElement).href = editHref;
     }
 
-    // Update src for images
-    if (editSrc && 'src' in element) {
-      (element as HTMLImageElement).src = editSrc;
+    // Update src and alt for images
+    if (selectedElement.type === 'image') {
+      if (editSrc) {
+        (element as HTMLImageElement).src = editSrc;
+      }
+      if (editAlt !== undefined) {
+        (element as HTMLImageElement).alt = editAlt;
+      }
     }
 
     // Save to state and localStorage
     const newEdits = {
       ...savedEdits,
       [selectedElement.selector]: {
-        content: editValue,
+        content: selectedElement.type !== 'image' ? editValue : undefined,
         href: editHref || undefined,
-        src: editSrc || undefined,
+        src: selectedElement.type === 'image' ? editSrc : undefined,
+        alt: selectedElement.type === 'image' ? editAlt : undefined,
         type: selectedElement.type,
       },
     };
@@ -349,49 +391,127 @@ export default function EditorPage() {
               </div>
             </div>
 
-            {/* Content Editor */}
-            <div className="mb-4">
-              <label className="block text-[10px] text-white/40 uppercase tracking-wider mb-2">
-                {selectedElement.type === 'gradient-text' ? 'Gradient Text' : 'Content'}
-              </label>
-              {selectedElement.type === 'heading' || selectedElement.type === 'button' || 
-               selectedElement.type === 'link' || selectedElement.type === 'span' || 
-               selectedElement.type === 'gradient-text' ? (
-                <input
-                  type="text"
-                  value={editValue}
-                  onChange={(e) => setEditValue(e.target.value)}
-                  className="w-full px-3 py-2 bg-black border border-white/10 text-sm font-light focus:border-[#4169E1]/40 focus:outline-none transition-colors"
-                  placeholder="Enter text..."
-                />
-              ) : (
-                <textarea
-                  value={editValue}
-                  onChange={(e) => setEditValue(e.target.value)}
-                  rows={4}
-                  className="w-full px-3 py-2 bg-black border border-white/10 text-sm font-light focus:border-[#4169E1]/40 focus:outline-none transition-colors resize-none"
-                  placeholder="Enter text..."
-                />
-              )}
-            </div>
+            {/* Image Editor */}
+            {selectedElement.type === 'image' ? (
+              <>
+                {/* Current Image Preview */}
+                <div className="mb-4">
+                  <label className="block text-[10px] text-white/40 uppercase tracking-wider mb-2">
+                    Current Image
+                  </label>
+                  <div className="border border-white/10 p-2 bg-white/5">
+                    <img 
+                      src={editSrc} 
+                      alt={editAlt}
+                      className="w-full h-auto max-h-40 object-contain"
+                    />
+                  </div>
+                </div>
 
-            {/* Link URL Editor */}
-            {(selectedElement.type === 'link' || selectedElement.type === 'button') && (
-              <div className="mb-4">
-                <label className="block text-[10px] text-white/40 uppercase tracking-wider mb-2">
-                  Link URL
-                </label>
-                <input
-                  type="text"
-                  value={editHref}
-                  onChange={(e) => setEditHref(e.target.value)}
-                  className="w-full px-3 py-2 bg-black border border-white/10 text-sm font-light focus:border-[#4169E1]/40 focus:outline-none transition-colors"
-                  placeholder="/path or https://..."
-                />
-                <p className="mt-2 text-[10px] text-white/30">
-                  💡 Use relative paths (/pricing) or full URLs
-                </p>
-              </div>
+                {/* Upload New Image */}
+                <div className="mb-4">
+                  <label className="block text-[10px] text-white/40 uppercase tracking-wider mb-2">
+                    Upload New Image
+                  </label>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full px-4 py-3 border border-white/10 hover:border-[#4169E1]/40 hover:bg-[#4169E1]/5 transition-all text-xs font-light flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    Choose Image
+                  </button>
+                  <p className="mt-2 text-[10px] text-white/30">
+                    PNG, JPG, GIF, SVG • Max 5MB
+                  </p>
+                </div>
+
+                {/* Image URL (Alternative) */}
+                <div className="mb-4">
+                  <label className="block text-[10px] text-white/40 uppercase tracking-wider mb-2">
+                    Or Enter Image URL
+                  </label>
+                  <input
+                    type="text"
+                    value={editSrc}
+                    onChange={(e) => setEditSrc(e.target.value)}
+                    className="w-full px-3 py-2 bg-black border border-white/10 text-sm font-light focus:border-[#4169E1]/40 focus:outline-none transition-colors"
+                    placeholder="https://example.com/image.png"
+                  />
+                </div>
+
+                {/* Alt Text */}
+                <div className="mb-4">
+                  <label className="block text-[10px] text-white/40 uppercase tracking-wider mb-2">
+                    Alt Text (Accessibility)
+                  </label>
+                  <input
+                    type="text"
+                    value={editAlt}
+                    onChange={(e) => setEditAlt(e.target.value)}
+                    className="w-full px-3 py-2 bg-black border border-white/10 text-sm font-light focus:border-[#4169E1]/40 focus:outline-none transition-colors"
+                    placeholder="Describe the image..."
+                  />
+                  <p className="mt-2 text-[10px] text-white/30">
+                    💡 Helps screen readers and SEO
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* Content Editor for Text Elements */}
+                <div className="mb-4">
+                  <label className="block text-[10px] text-white/40 uppercase tracking-wider mb-2">
+                    {selectedElement.type === 'gradient-text' ? 'Gradient Text' : 'Content'}
+                  </label>
+                  {selectedElement.type === 'heading' || selectedElement.type === 'button' || 
+                   selectedElement.type === 'link' || selectedElement.type === 'span' || 
+                   selectedElement.type === 'gradient-text' ? (
+                    <input
+                      type="text"
+                      value={editValue}
+                      onChange={(e) => setEditValue(e.target.value)}
+                      className="w-full px-3 py-2 bg-black border border-white/10 text-sm font-light focus:border-[#4169E1]/40 focus:outline-none transition-colors"
+                      placeholder="Enter text..."
+                    />
+                  ) : (
+                    <textarea
+                      value={editValue}
+                      onChange={(e) => setEditValue(e.target.value)}
+                      rows={4}
+                      className="w-full px-3 py-2 bg-black border border-white/10 text-sm font-light focus:border-[#4169E1]/40 focus:outline-none transition-colors resize-none"
+                      placeholder="Enter text..."
+                    />
+                  )}
+                </div>
+
+                {/* Link URL Editor */}
+                {(selectedElement.type === 'link' || selectedElement.type === 'button') && (
+                  <div className="mb-4">
+                    <label className="block text-[10px] text-white/40 uppercase tracking-wider mb-2">
+                      Link URL
+                    </label>
+                    <input
+                      type="text"
+                      value={editHref}
+                      onChange={(e) => setEditHref(e.target.value)}
+                      className="w-full px-3 py-2 bg-black border border-white/10 text-sm font-light focus:border-[#4169E1]/40 focus:outline-none transition-colors"
+                      placeholder="/path or https://..."
+                    />
+                    <p className="mt-2 text-[10px] text-white/30">
+                      💡 Use relative paths (/pricing) or full URLs
+                    </p>
+                  </div>
+                )}
+              </>
             )}
 
             {/* Update Button */}
@@ -406,10 +526,21 @@ export default function EditorPage() {
             <div className="mt-6 p-4 border border-white/10 bg-white/5">
               <p className="text-[10px] text-white/40 uppercase tracking-wider mb-2">💡 Tips</p>
               <ul className="text-xs text-white/60 space-y-1 font-light">
-                <li>• Click any text to edit</li>
-                <li>• Changes save automatically</li>
-                <li>• Gradient text editable separately</li>
-                <li>• Links have custom URLs</li>
+                {selectedElement.type === 'image' ? (
+                  <>
+                    <li>• Upload PNG, JPG, GIF, or SVG</li>
+                    <li>• Max file size: 5MB</li>
+                    <li>• Or paste image URL</li>
+                    <li>• Add alt text for accessibility</li>
+                  </>
+                ) : (
+                  <>
+                    <li>• Click any text to edit</li>
+                    <li>• Changes save automatically</li>
+                    <li>• Gradient text editable separately</li>
+                    <li>• Links have custom URLs</li>
+                  </>
+                )}
               </ul>
             </div>
           </div>
@@ -579,7 +710,7 @@ export default function EditorPage() {
         {/* Footer Info */}
         <div className="border-t border-white/10 bg-black/80 backdrop-blur-xl px-6 py-2">
           <div className="flex items-center justify-between text-[10px] text-white/30 uppercase tracking-wider">
-            <span>Click any element to edit • Hover to see editable elements</span>
+            <span>Click any text or image to edit • Hover to see editable elements</span>
             <span>{Object.keys(savedEdits).length} edits saved</span>
           </div>
         </div>
