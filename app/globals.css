@@ -203,6 +203,18 @@
     }
   }
 
+  /* Fade Out Down */
+  @keyframes fadeOutDown {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  }
+
   /* Zoom In */
   @keyframes zoomIn {
     from {
@@ -419,6 +431,10 @@
 
   .animate-slide-up-fade {
     animation: slideUpFade 0.4s ease-out forwards;
+  }
+
+  .animate-fade-out-down {
+    animation: fadeOutDown 0.4s ease-out forwards;
   }
 
   .animate-zoom-in {

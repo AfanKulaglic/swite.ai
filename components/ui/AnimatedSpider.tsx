@@ -180,14 +180,26 @@ export default function AnimatedSpider({ state, className = "w-10 h-10" }: Anima
           </g>
         )}
 
+        {/* Celebrating stars */}
+        {state === 'celebrating' && (
+          <g>
+            <path d="M 60 20 L 62 26 L 68 26 L 63 30 L 65 36 L 60 32 L 55 36 L 57 30 L 52 26 L 58 26 Z" 
+              fill="#FFD700" className="animate-spin-star" />
+            <path d="M 30 40 L 32 44 L 36 44 L 33 47 L 34 51 L 30 48 L 26 51 L 27 47 L 24 44 L 28 44 Z" 
+              fill="#FFD700" className="animate-spin-star" style={{ animationDelay: '0.2s' }} />
+            <path d="M 90 40 L 92 44 L 96 44 L 93 47 L 94 51 L 90 48 L 86 51 L 87 47 L 84 44 L 88 44 Z" 
+              fill="#FFD700" className="animate-spin-star" style={{ animationDelay: '0.4s' }} />
+          </g>
+        )}
+
         {/* Spider body - moves while building */}
         <g 
           transform={state === 'building' ? `translate(${spiderPosition.x - 60}, ${spiderPosition.y - 60}) rotate(${spiderPosition.rotation}, 60, 60)` : ''}
-          className={state === 'listening' ? 'animate-bob' : ''}
+          className={state === 'listening' ? 'animate-bob' : state === 'celebrating' ? 'animate-bounce-happy' : ''}
         >
-          <ellipse cx="60" cy="74" rx="16" ry="18" fill="url(#spiderBodyGradient)" className={state === 'listening' ? 'animate-breathe' : ''} />
+          <ellipse cx="60" cy="74" rx="16" ry="18" fill="url(#spiderBodyGradient)" className={state === 'thinking' ? 'animate-breathe' : ''} />
           <ellipse cx="58" cy="70" rx="12" ry="14" fill="url(#spiderShineGradient)" opacity="0.4" />
-          <ellipse cx="60" cy="50" rx="13" ry="15" fill="url(#spiderBodyGradient)" className={state === 'listening' ? 'animate-breathe' : ''} />
+          <ellipse cx="60" cy="50" rx="13" ry="15" fill="url(#spiderBodyGradient)" className={state === 'thinking' ? 'animate-breathe' : ''} />
           <ellipse cx="58" cy="47" rx="10" ry="11" fill="url(#spiderShineGradient)" opacity="0.4" />
 
           {/* Legs */}
@@ -264,20 +276,29 @@ export default function AnimatedSpider({ state, className = "w-10 h-10" }: Anima
           )}
         </g>
 
+        {/* Thought bubbles for thinking state */}
+        {state === 'thinking' && (
+          <g className="animate-float-up-fast">
+            <circle cx="75" cy="25" r="4" fill="white" opacity="0.8" />
+            <circle cx="82" cy="18" r="6" fill="white" opacity="0.8" />
+            <circle cx="92" cy="15" r="8" fill="white" opacity="0.8" />
+            <text x="92" y="18" fontSize="10" fill="#0C6EFD" textAnchor="middle" fontWeight="bold">?</text>
+          </g>
+        )}
+
         <defs>
           <linearGradient id="spiderBodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FFFFFF" />
-            <stop offset="50%" stopColor="#F5F5F5" />
-            <stop offset="100%" stopColor="#E5E5E5" />
+            <stop offset="0%" stopColor="#0C6EFD" />
+            <stop offset="100%" stopColor="#0A58CA" />
           </linearGradient>
           <linearGradient id="spiderShineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="white" />
             <stop offset="100%" stopColor="transparent" />
           </linearGradient>
           <linearGradient id="webGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FFFFFF" />
-            <stop offset="50%" stopColor="#F0F0F0" />
-            <stop offset="100%" stopColor="#E0E0E0" />
+            <stop offset="0%" stopColor="#0C6EFD" />
+            <stop offset="50%" stopColor="#8B5CF6" />
+            <stop offset="100%" stopColor="#0A58CA" />
           </linearGradient>
         </defs>
       </svg>
@@ -290,10 +311,7 @@ export default function AnimatedSpider({ state, className = "w-10 h-10" }: Anima
         @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
         @keyframes bounce-happy { 0%, 100% { transform: translateY(0) scale(1); } 25% { transform: translateY(-8px) scale(1.05); } 50% { transform: translateY(0) scale(1); } 75% { transform: translateY(-4px) scale(1.02); } }
         @keyframes float-up-fast { 0% { opacity: 0; transform: translateY(15px) scale(0.8); } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(-15px) scale(1.2); } }
-        @keyframes sparkle-eye { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
-        @keyframes silk-shimmer { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
         @keyframes node-pop { 0% { transform: scale(0); opacity: 0; } 50% { transform: scale(1.5); } 100% { transform: scale(1); opacity: 1; } }
-        @keyframes web-glow { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.05); } }
         @keyframes spinnerets-work { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.3); opacity: 1; } }
         @keyframes spin-star { 0% { transform: rotate(0deg) scale(0); } 50% { transform: rotate(180deg) scale(1.2); } 100% { transform: rotate(360deg) scale(1); } }
         @keyframes pulse-fast { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
@@ -304,10 +322,7 @@ export default function AnimatedSpider({ state, className = "w-10 h-10" }: Anima
         .animate-bob { animation: bob 1s ease-in-out infinite; }
         .animate-bounce-happy { animation: bounce-happy 0.8s ease-in-out infinite; }
         .animate-float-up-fast { animation: float-up-fast 1.5s ease-in-out infinite; }
-        .animate-sparkle-eye { animation: sparkle-eye 0.4s ease-in-out infinite; }
-        .animate-silk-shimmer { animation: silk-shimmer 0.8s ease-in-out infinite; }
         .animate-node-pop { animation: node-pop 0.4s ease-out forwards; }
-        .animate-web-glow { animation: web-glow 2s ease-in-out infinite; }
         .animate-spinnerets-work { animation: spinnerets-work 0.3s ease-in-out infinite; }
         .animate-spin-star { animation: spin-star 1s ease-out forwards; transform-origin: 60px 20px; }
         .animate-pulse-fast { animation: pulse-fast 0.5s ease-in-out infinite; }

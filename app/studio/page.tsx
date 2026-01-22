@@ -10,38 +10,31 @@ export default function StudioPage() {
   const router = useRouter();
   const [step, setStep] = useState<'chat' | 'template'>('chat');
   const [userInput, setUserInput] = useState('');
-  const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string }>>([
-    { role: 'assistant', content: "Hello. I'm here to help you build your website. What type of site are you looking to create?" }
-  ]);
+  const [currentQuestion, setCurrentQuestion] = useState("Hello. I'm here to help you build your website. What type of site are you looking to create?");
+  const [currentAnswer, setCurrentAnswer] = useState("");
+  const [showAnswer, setShowAnswer] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [spiderState, setSpiderState] = useState<SpiderState>('idle');
-  const [spiderMessage, setSpiderMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
   const handleSendMessage = async () => {
     if (!userInput.trim()) return;
 
-    const newMessages = [...messages, { role: 'user' as const, content: userInput }];
-    setMessages(newMessages);
+    // Show user's answer with fade-in animation
+    setCurrentAnswer(userInput);
+    setShowAnswer(true);
+    const savedInput = userInput;
     setUserInput('');
     
-    // Spider thinking state
     setSpiderState('thinking');
-    setSpiderMessage('Analyzing your requirements...');
     setIsTyping(true);
 
-    // After 1 second, switch to building
     setTimeout(() => {
       setSpiderState('building');
-      setSpiderMessage('Weaving your website...');
     }, 1000);
 
     setTimeout(() => {
@@ -54,18 +47,21 @@ export default function StudioPage() {
       
       const response = responses[Math.floor(Math.random() * responses.length)];
       
-      setMessages([...newMessages, { role: 'assistant', content: response }]);
-      setIsTyping(false);
-      
-      // Spider celebrating
-      setSpiderState('celebrating');
-      setSpiderMessage('Your website is ready!');
+      // Fade out old conversation
+      setShowAnswer(false);
       
       setTimeout(() => {
-        setStep('template');
-        setSpiderState('idle');
-        setSpiderMessage('');
-      }, 1200);
+        // Update to new question after fade out
+        setCurrentQuestion(response);
+        setCurrentAnswer("");
+        setIsTyping(false);
+        setSpiderState('celebrating');
+        
+        setTimeout(() => {
+          setStep('template');
+          setSpiderState('idle');
+        }, 1200);
+      }, 500);
     }, 2500);
   };
 
@@ -76,14 +72,11 @@ export default function StudioPage() {
     }
   };
 
-  // Update spider state when user is typing
   useEffect(() => {
     if (userInput.trim() && spiderState === 'idle') {
       setSpiderState('listening');
-      setSpiderMessage('Listening...');
     } else if (!userInput.trim() && spiderState === 'listening' && !isTyping) {
       setSpiderState('idle');
-      setSpiderMessage('');
     }
   }, [userInput, spiderState, isTyping]);
 
@@ -92,167 +85,152 @@ export default function StudioPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Spider Web Background */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.03] spider-web-bg z-0"></div>
+    <div className="min-h-screen bg-black text-white overflow-hidden">
+      {/* Subtle grid background */}
+      <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]" />
       
-      {/* Subtle Grid Background */}
-      {/* Single Large Spider Web Background */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.15] z-0">
-        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-          <g transform="translate(50%, 50%)">
-            {/* Radial lines */}
-            <line x1="0" y1="0" x2="0" y2="-800" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.5" />
-            <line x1="0" y1="0" x2="565" y2="-565" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.5" />
-            <line x1="0" y1="0" x2="800" y2="0" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.5" />
-            <line x1="0" y1="0" x2="565" y2="565" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.5" />
-            <line x1="0" y1="0" x2="0" y2="800" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.5" />
-            <line x1="0" y1="0" x2="-565" y2="565" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.5" />
-            <line x1="0" y1="0" x2="-800" y2="0" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.5" />
-            <line x1="0" y1="0" x2="-565" y2="-565" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.5" />
-            <line x1="0" y1="0" x2="400" y2="-693" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="1" />
-            <line x1="0" y1="0" x2="693" y2="-400" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="1" />
-            <line x1="0" y1="0" x2="693" y2="400" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="1" />
-            <line x1="0" y1="0" x2="400" y2="693" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="1" />
-            <line x1="0" y1="0" x2="-400" y2="693" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="1" />
-            <line x1="0" y1="0" x2="-693" y2="400" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="1" />
-            <line x1="0" y1="0" x2="-693" y2="-400" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="1" />
-            <line x1="0" y1="0" x2="-400" y2="-693" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="1" />
-            
-            {/* Circular rings */}
-            <circle cx="0" cy="0" r="80" fill="none" stroke="rgba(255, 255, 255, 0.3)" strokeWidth="1.5" />
-            <circle cx="0" cy="0" r="160" fill="none" stroke="rgba(255, 255, 255, 0.28)" strokeWidth="1.5" />
-            <circle cx="0" cy="0" r="240" fill="none" stroke="rgba(255, 255, 255, 0.26)" strokeWidth="1.5" />
-            <circle cx="0" cy="0" r="320" fill="none" stroke="rgba(255, 255, 255, 0.24)" strokeWidth="1.5" />
-            <circle cx="0" cy="0" r="400" fill="none" stroke="rgba(255, 255, 255, 0.22)" strokeWidth="1.5" />
-            <circle cx="0" cy="0" r="500" fill="none" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1.5" />
-            <circle cx="0" cy="0" r="600" fill="none" stroke="rgba(255, 255, 255, 0.18)" strokeWidth="1.5" />
-            <circle cx="0" cy="0" r="700" fill="none" stroke="rgba(255, 255, 255, 0.16)" strokeWidth="1.5" />
-          </g>
-        </svg>
-      </div>
+      {/* Gradient orbs */}
+      <div className="fixed top-1/4 right-1/4 w-[600px] h-[600px] bg-gradient-to-br from-[#4169E1]/5 to-[#6B46C1]/5 rounded-full blur-3xl" />
+      <div className="fixed bottom-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-[#6B46C1]/5 to-[#4169E1]/5 rounded-full blur-3xl" />
 
       {/* Back Button */}
       <div className="fixed top-6 left-6 z-50">
         <button
           onClick={() => router.push('/')}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-sm font-medium text-white/80 hover:text-white"
+          className="inline-flex items-center gap-2 px-3 py-2 border border-white/10 hover:border-[#4169E1]/40 hover:bg-[#4169E1]/5 transition-all duration-300 text-sm font-light group"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
           </svg>
-          Back to Home
+          Back
         </button>
       </div>
 
-      {/* Removed gradient accent for pure black/white */}
-
-      <div className="relative z-20 min-h-screen flex items-center justify-center px-6">
+      <div className="relative z-10 h-screen flex flex-col items-center justify-center px-6 py-8">
         {step === 'chat' && (
-          <div className="max-w-4xl mx-auto w-full">
-            {/* Header */}
-            <div className="mb-16 opacity-0 animate-fade-in-up">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6">
-                <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></div>
-                <span className="text-xs font-medium text-white/60 uppercase tracking-wider">AI Studio</span>
+          <div className="w-full max-w-6xl h-full flex flex-col">
+            {/* Header - Compact */}
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 border border-[#4169E1]/20 bg-gradient-to-r from-[#4169E1]/5 to-[#6B46C1]/5 animate-fade-in">
+                <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#4169E1] to-[#6B46C1]" />
+                <span className="text-xs font-medium text-white/60 tracking-wider uppercase">AI Studio</span>
               </div>
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-white">
-                Build your website
+              <h1 className="text-[clamp(2.5rem,5vw,4rem)] font-light tracking-tight leading-[0.95] mb-4 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+                <span className="block text-white/40">Build websites</span>
+                <span className="block font-medium text-white">in seconds</span>
               </h1>
-              <p className="text-xl text-white/50 max-w-2xl">
-                Describe your project and I'll prepare a professional template for you to customize.
+              <p className="text-base text-white/40 max-w-xl mx-auto font-light animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                Describe your vision in natural language.
               </p>
             </div>
 
-            {/* Chat Interface */}
-            <div className="bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden opacity-0 animate-fade-in-up delay-200">
-              {/* Messages */}
-              <div className="h-[420px] overflow-y-auto p-8 space-y-6 custom-scrollbar">
-                {messages.map((message, index) => (
-                  <div
-                    key={index}
-                    className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div className={`flex gap-4 max-w-[85%] ${message.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                      {/* Avatar */}
-                      <div className={`flex-shrink-0 ${
-                        message.role === 'user' 
-                          ? 'w-10 h-10 rounded-full bg-white/10 flex items-center justify-center' 
-                          : ''
-                      }`}>
-                        {message.role === 'user' ? (
-                          <svg className="w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                          </svg>
-                        ) : (
-                          <AnimatedSpider state={spiderState} className="w-10 h-10" />
-                        )}
-                      </div>
-                      {/* Message */}
-                      <div className={`${
-                        message.role === 'user'
-                          ? 'bg-white/5 text-white'
-                          : 'text-white/80'
-                      } px-5 py-3.5 rounded-xl`}>
-                        <p className="text-[15px] leading-relaxed">{message.content}</p>
-                      </div>
-                    </div>
+            {/* Single Conversation Display - Compact */}
+            <div className="flex-1 flex items-center justify-center min-h-0">
+              <div className="w-full max-w-4xl">
+                {/* AI Question - Morphs position when answer appears */}
+                <div 
+                  className={`flex gap-4 items-start transition-all duration-700 ease-out ${
+                    showAnswer ? 'opacity-60 scale-95 -translate-y-2' : 'opacity-100 scale-100 translate-y-0'
+                  }`}
+                  key={`question-${currentQuestion}`}
+                >
+                  <div className="relative flex-shrink-0">
+                    <div className="absolute -inset-1.5 bg-gradient-to-r from-[#4169E1]/20 to-[#6B46C1]/20 rounded-full blur opacity-60 transition-opacity duration-700" />
+                    <AnimatedSpider state={spiderState} className="relative w-10 h-10" />
                   </div>
-                ))}
-                
-                {isTyping && (
-                  <div className="flex justify-start">
-                    <div className="flex gap-4 max-w-[85%]">
-                      <div className="flex-shrink-0">
-                        <AnimatedSpider state={spiderState} className="w-10 h-10" />
-                      </div>
-                      <div className="px-5 py-3.5 rounded-xl">
-                        <div className="flex gap-1.5">
-                          <span className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce"></span>
-                          <span className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.15s' }}></span>
-                          <span className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></span>
+                  <div className="flex-1">
+                    <div className="text-[10px] text-white/30 mb-2 uppercase tracking-wider">AI Assistant</div>
+                    <p className="text-lg text-white/80 font-light leading-relaxed transition-all duration-700">
+                      {currentQuestion}
+                    </p>
+                  </div>
+                </div>
+
+                {/* User Answer - Slides up and scales in */}
+                <div className="relative h-0">
+                  <div 
+                    className={`absolute top-8 left-0 right-0 transition-all duration-700 ease-out ${
+                      showAnswer 
+                        ? 'opacity-100 translate-y-0 scale-100' 
+                        : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
+                    }`}
+                    key={`answer-${currentAnswer}`}
+                  >
+                    {currentAnswer && (
+                      <div className="flex gap-4 items-start">
+                        <div className="w-10 h-10 flex-shrink-0 bg-gradient-to-br from-[#4169E1]/10 to-[#6B46C1]/10 border border-[#4169E1]/20 flex items-center justify-center transition-all duration-700">
+                          <svg className="w-5 h-5 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
                         </div>
+                        <div className="flex-1">
+                          <div className="text-[10px] text-white/30 mb-2 uppercase tracking-wider">You</div>
+                          <p className="text-lg text-white font-light leading-relaxed">{currentAnswer}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Typing Indicator - Appears below */}
+                {isTyping && (
+                  <div 
+                    className={`flex gap-4 items-start animate-fade-in transition-all duration-700 ${
+                      showAnswer ? 'mt-24' : 'mt-8'
+                    }`}
+                  >
+                    <div className="relative flex-shrink-0">
+                      <div className="absolute -inset-1.5 bg-gradient-to-r from-[#4169E1]/20 to-[#6B46C1]/20 rounded-full blur opacity-60 animate-pulse" />
+                      <AnimatedSpider state={spiderState} className="relative w-10 h-10" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-[10px] text-white/30 mb-2 uppercase tracking-wider">AI Assistant</div>
+                      <div className="flex gap-2">
+                        <span className="w-2.5 h-2.5 bg-gradient-to-r from-[#4169E1] to-[#6B46C1] rounded-full animate-bounce" />
+                        <span className="w-2.5 h-2.5 bg-gradient-to-r from-[#4169E1] to-[#6B46C1] rounded-full animate-bounce" style={{ animationDelay: '0.15s' }} />
+                        <span className="w-2.5 h-2.5 bg-gradient-to-r from-[#4169E1] to-[#6B46C1] rounded-full animate-bounce" style={{ animationDelay: '0.3s' }} />
                       </div>
                     </div>
                   </div>
                 )}
-                
-                <div ref={messagesEndRef} />
               </div>
+            </div>
 
-              {/* Input Area */}
-              <div className="border-t border-white/10 p-6 bg-white/[0.01]">
-                <div className="flex gap-3">
+            {/* Input Section - Compact */}
+            <div className="border-t border-[#4169E1]/10 pt-6 animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+              <div className="max-w-3xl mx-auto">
+                <div className="flex gap-3 mb-4">
                   <input
                     type="text"
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Describe your website..."
-                    className="flex-1 px-5 py-3.5 rounded-xl bg-white/5 border border-white/10 focus:border-white/20 outline-none text-white placeholder:text-white/30 transition-all text-[15px]"
+                    className="flex-1 px-5 py-3 bg-white/5 border border-white/10 focus:border-[#4169E1]/40 focus:bg-white/[0.07] outline-none text-white placeholder:text-white/30 transition-all duration-300 text-sm font-light"
                     disabled={isTyping}
                   />
                   <button
                     onClick={handleSendMessage}
                     disabled={isTyping || !userInput.trim()}
-                    className="px-6 py-3.5 rounded-xl bg-white text-black font-medium hover:bg-white/90 disabled:opacity-30 disabled:cursor-not-allowed transition-all text-[15px]"
+                    className="px-8 py-3 bg-gradient-to-r from-[#4169E1] to-[#6B46C1] text-white text-sm font-medium tracking-wide hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
                   >
-                    Send
+                    Generate
                   </button>
                 </div>
                 
-                {/* Quick Prompts */}
-                <div className="mt-4 flex flex-wrap gap-2">
+                {/* Quick Prompts - Compact */}
+                <div className="flex flex-wrap gap-2 justify-center">
                   {[
                     'Corporate website',
                     'Portfolio',
-                    'E-commerce',
+                    'E-commerce store',
                     'SaaS landing page'
-                  ].map((prompt) => (
+                  ].map((prompt, index) => (
                     <button
                       key={prompt}
                       onClick={() => setUserInput(prompt)}
-                      className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-white/60 hover:text-white hover:border-white/20 transition-all"
+                      className="px-3 py-1.5 border border-[#4169E1]/20 text-[11px] text-white/40 hover:text-white hover:border-[#4169E1]/40 hover:bg-[#4169E1]/5 transition-all duration-300 font-light tracking-wide animate-fade-in"
+                      style={{ animationDelay: `${0.6 + index * 0.05}s` }}
                     >
                       {prompt}
                     </button>
@@ -261,146 +239,115 @@ export default function StudioPage() {
               </div>
             </div>
 
-            {/* Info Note */}
-            <div className="mt-6 text-center">
-              <p className="text-sm text-white/40">
-                No account required to start building • Sign up only when ready to publish
+            {/* Footer Note - Compact */}
+            <div className="mt-4 text-center animate-fade-in" style={{ animationDelay: '0.7s' }}>
+              <p className="text-xs text-white/20 font-light tracking-wide">
+                No account required • Sign up only when ready to publish
               </p>
             </div>
           </div>
         )}
 
         {step === 'template' && (
-          <div className="h-screen flex items-center justify-center px-6 py-8">
-            <div className="max-w-6xl mx-auto w-full">
-              {/* Header - Beautiful gradient text */}
-              <div className="mb-8 text-center opacity-0 animate-fade-in-up">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 mb-4 backdrop-blur-sm">
-                  <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-400 animate-pulse"></div>
-                  <span className="text-xs font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 uppercase tracking-wider">Template Ready</span>
-                </div>
-                <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-3 text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-purple-200">
-                  Your Perfect Template
-                </h1>
-                <p className="text-lg text-white/60 max-w-2xl mx-auto">
-                  AI-crafted template ready to launch. Click to customize and make it yours.
-                </p>
+          <div className="w-full max-w-7xl h-full flex flex-col">
+            {/* Header - Compact */}
+            <div className="text-center mb-6 animate-fade-in-up">
+              <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 border border-[#4169E1]/20 bg-gradient-to-r from-[#4169E1]/5 to-[#6B46C1]/5">
+                <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#4169E1] to-[#6B46C1]" />
+                <span className="text-xs font-medium text-white/60 tracking-wider uppercase">Template Ready</span>
               </div>
+              <h1 className="text-[clamp(2.5rem,5vw,4rem)] font-light tracking-tight leading-[0.95] mb-3">
+                <span className="block text-white/40">Your perfect</span>
+                <span className="block font-medium text-white">template</span>
+              </h1>
+              <p className="text-sm text-white/40 font-light">
+                Production-ready. Fully customizable. Deploy in seconds.
+              </p>
+            </div>
 
-              {/* Template Card - Beautiful with glow effects */}
-              <div className="opacity-0 animate-fade-in-up delay-200">
-                <div
-                  className="group cursor-pointer relative"
-                  onClick={handleSelectTemplate}
-                >
-                  {/* Glow effect behind card */}
-                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-3xl blur-xl opacity-50 group-hover:opacity-100 transition-all duration-500"></div>
-                  
-                  <div className="relative rounded-2xl overflow-hidden border border-white/10 group-hover:border-white/30 transition-all duration-500 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur-xl z-30">
-                    {/* Preview with overlay gradient */}
-                    <div className="aspect-[16/8] bg-black relative overflow-hidden z-30">
-                      <iframe
-                        src="/templates/websphere/index.html"
-                        className="w-full h-full pointer-events-none scale-[0.5] origin-top-left relative z-30"
-                        style={{ width: '200%', height: '200%' }}
-                        title="Template Preview"
-                      />
-                      
-                      {/* Gradient overlay on preview */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
-                      
-                      {/* Hover overlay with beautiful animation */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/90 via-purple-500/90 to-pink-500/90 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
-                        <div className="text-center transform scale-90 group-hover:scale-100 transition-transform duration-500">
-                          <div className="w-16 h-16 rounded-2xl bg-white/20 border-2 border-white/40 flex items-center justify-center mx-auto mb-4 backdrop-blur-sm group-hover:rotate-12 transition-transform duration-500">
-                            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                            </svg>
-                          </div>
-                          <div className="text-white font-bold text-xl mb-2">Open Editor</div>
-                          <div className="text-white/80 text-sm">Start customizing your template</div>
+            {/* Template Card - Compact, fits on screen */}
+            <div className="flex-1 min-h-0 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+              <div
+                className="group cursor-pointer relative h-full"
+                onClick={handleSelectTemplate}
+              >
+                {/* Subtle glow effect */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-[#4169E1]/10 to-[#6B46C1]/10 blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                
+                <div className="relative h-full flex flex-col overflow-hidden border border-white/10 group-hover:border-[#4169E1]/40 transition-all duration-500 bg-white/[0.02] backdrop-blur-xl">
+                  {/* Preview - Takes available space */}
+                  <div className="flex-1 min-h-0 bg-black relative overflow-hidden">
+                    <iframe
+                      src="/templates/websphere/index.html"
+                      className="w-full h-full pointer-events-none scale-[0.5] origin-top-left"
+                      style={{ width: '200%', height: '200%' }}
+                      title="Template Preview"
+                    />
+                    
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent pointer-events-none" />
+                    
+                    {/* Hover overlay - Minimal */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#4169E1]/90 to-[#6B46C1]/90 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                      <div className="text-center transform scale-95 group-hover:scale-100 transition-transform duration-500">
+                        <div className="w-16 h-16 border border-white/20 flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                          </svg>
                         </div>
+                        <div className="text-white font-medium text-xl mb-1">Open Editor</div>
+                        <div className="text-white/60 text-xs font-light">Start customizing</div>
                       </div>
                     </div>
+                  </div>
 
-                    {/* Info section with gradient accents */}
-                    <div className="p-6 border-t border-white/10 bg-gradient-to-br from-white/[0.03] to-transparent">
-                      <div className="flex items-start justify-between mb-5">
-                        <div>
-                          <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
-                            WebSphere Hosting
-                            <span className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 text-blue-300">Pro</span>
-                          </h3>
-                          <p className="text-sm text-white/60">Professional cloud hosting & infrastructure website</p>
-                        </div>
-                        <div className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30">
-                          <span className="text-xs font-bold text-green-300 flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
-                            Ready
-                          </span>
-                        </div>
-                      </div>
-                      
-                      {/* Features with icons and gradients */}
-                      <div className="grid grid-cols-5 gap-2 mb-5">
-                        {[
-                          { icon: '🏠', label: 'Hero', color: 'from-blue-500/10 to-blue-600/10 border-blue-500/20' },
-                          { icon: '⚡', label: 'Features', color: 'from-yellow-500/10 to-orange-500/10 border-yellow-500/20' },
-                          { icon: '💰', label: 'Pricing', color: 'from-green-500/10 to-emerald-500/10 border-green-500/20' },
-                          { icon: '💬', label: 'Reviews', color: 'from-purple-500/10 to-pink-500/10 border-purple-500/20' },
-                          { icon: '📧', label: 'Contact', color: 'from-red-500/10 to-rose-500/10 border-red-500/20' }
-                        ].map((item) => (
-                          <div key={item.label} className={`flex flex-col items-center gap-1 px-2 py-2 rounded-lg bg-gradient-to-br ${item.color} border backdrop-blur-sm hover:scale-105 transition-transform duration-300`}>
-                            <span className="text-base">{item.icon}</span>
-                            <span className="text-xs text-white/70 font-medium">{item.label}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* CTA Button with gradient */}
-                      <button className="w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white font-bold hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 text-sm flex items-center justify-center gap-2 group/btn hover:scale-[1.02]">
-                        <span>Open in Editor</span>
-                        <svg className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </button>
+                  {/* Info - Compact */}
+                  <div className="p-6 border-t border-white/10 flex items-center justify-between gap-6">
+                    <div className="flex-1">
+                      <h3 className="text-xl font-light text-white mb-1">WebSphere Hosting</h3>
+                      <p className="text-xs text-white/40 font-light">Professional cloud hosting template</p>
                     </div>
+                    
+                    {/* Features - Inline */}
+                    <div className="flex gap-2 items-center">
+                      {['Hero', 'Features', 'Pricing', 'Reviews', 'Contact'].map((item, index) => (
+                        <div 
+                          key={item} 
+                          className="px-2 py-1 border border-white/10 text-[10px] text-white/40 font-light tracking-wide animate-fade-in"
+                          style={{ animationDelay: `${index * 0.05}s` }}
+                        >
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* CTA - Compact */}
+                    <button className="px-6 py-3 bg-gradient-to-r from-[#4169E1] to-[#6B46C1] text-white font-medium hover:opacity-90 transition-all duration-300 text-xs tracking-wide flex items-center gap-2 group/btn whitespace-nowrap">
+                      <span>Open Editor</span>
+                      <svg className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Back Button - Elegant */}
-              <div className="mt-6 flex justify-center opacity-0 animate-fade-in-up delay-300">
-                <button
-                  onClick={() => setStep('chat')}
-                  className="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all inline-flex items-center gap-2 text-sm text-white/60 hover:text-white backdrop-blur-sm group/back"
-                >
-                  <svg className="w-4 h-4 group-hover/back:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                  Back to Chat
-                </button>
-              </div>
+            {/* Back Button - Minimal */}
+            <div className="mt-4 flex justify-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
+              <button
+                onClick={() => setStep('chat')}
+                className="inline-flex items-center gap-2 px-3 py-2 border border-white/10 hover:border-[#4169E1]/40 hover:bg-[#4169E1]/5 transition-all duration-300 text-sm font-light group/back"
+              >
+                <svg className="w-4 h-4 group-hover/back:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to Chat
+              </button>
             </div>
           </div>
         )}
       </div>
-
-      <style jsx>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 2px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.15);
-        }
-      `}</style>
     </div>
   );
 }

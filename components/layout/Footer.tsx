@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AnimatedSpider from "@/components/ui/AnimatedSpider";
+import Image from "next/image";
 
 export default function Footer() {
   const links = {
@@ -40,11 +40,16 @@ export default function Footer() {
             <Link href="/" className="inline-flex items-center gap-3 group mb-6">
               <div className="relative">
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl blur-md opacity-0 group-hover:opacity-75 transition-all duration-300" />
-                <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 p-1 shadow-lg shadow-blue-500/30">
-                  <AnimatedSpider state="idle" className="w-full h-full" />
+                <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg shadow-blue-500/30 overflow-hidden">
+                  <Image 
+                    src="/logo.png" 
+                    alt="SWITE.AI Logo" 
+                    fill
+                    className="object-contain p-1"
+                  />
                 </div>
               </div>
-              <span className="text-xl font-black tracking-tight bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+              <span className="text-2xl font-black tracking-tight bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
                 SWITE.AI
               </span>
             </Link>
