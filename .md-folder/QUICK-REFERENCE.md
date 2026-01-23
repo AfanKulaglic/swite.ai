@@ -1,14 +1,14 @@
-# Quick Reference - AI Website Builder
+# Quick Reference - SWITE.AI
 
 ## 📁 File Structure
 
 ```
-swite.ai-main/
+swite.ai/
 ├── supabase/
 │   ├── migrations/
-│   │   └── 001_initial_schema.sql      # Database schema
-│   └── seed/
-│       └── sample-templates.sql        # Sample data
+│   │   ├── 001_initial_schema.sql      # Database schema
+│   │   └── 20240115_websphere_template.sql  # Template example
+│   └── seed/                           # Sample data
 ├── lib/
 │   ├── supabase/
 │   │   ├── client.ts                   # Supabase client
@@ -18,25 +18,34 @@ swite.ai-main/
 │       ├── siteService.ts              # Site operations
 │       └── assetService.ts             # File uploads
 ├── components/
-│   ├── sections/                       # Master components
+│   ├── sections/                       # Section components
 │   │   ├── Hero.tsx
 │   │   ├── FeatureGrid.tsx
-│   │   ├── ContactForm.tsx
+│   │   ├── Stats.tsx
+│   │   ├── Pricing.tsx
 │   │   ├── Testimonials.tsx
 │   │   ├── CTA.tsx
+│   │   ├── FAQ.tsx
+│   │   ├── TrustBadges.tsx
+│   │   ├── DomainSearch.tsx
+│   │   ├── FooterSection.tsx
 │   │   ├── Portfolio.tsx
-│   │   └── About.tsx
+│   │   ├── About.tsx
+│   │   └── ContactForm.tsx
 │   └── renderer/
 │       └── DynamicRenderer.tsx         # JSON → React
 ├── app/
-│   ├── templates/page.tsx              # Template browser
+│   ├── templates/
+│   │   ├── page.tsx                    # Template browser
+│   │   └── [slug]/page.tsx             # Template preview
 │   └── studio/
-│       ├── editor/page.tsx             # Existing editor
-│       └── builder/page.tsx            # New builder (to create)
-└── docs/
-    ├── SETUP-GUIDE.md                  # Setup instructions
-    ├── IMPLEMENTATION-STATUS.md        # What's done
-    └── INTEGRATION-GUIDE.md            # How to connect
+│       └── builder/page.tsx            # Website builder
+├── docs/
+│   ├── CREATING_TEMPLATES.md           # Template creation guide
+│   ├── ARCHITECTURE.md                 # System architecture
+│   └── QUICK-REFERENCE.md              # This file
+└── public/
+    └── templates/                      # Static template assets
 ```
 
 ## 🗄️ Database Tables

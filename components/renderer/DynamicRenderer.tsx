@@ -7,17 +7,32 @@ import { Testimonials } from '@/components/sections/Testimonials';
 import { CTA } from '@/components/sections/CTA';
 import { Portfolio } from '@/components/sections/Portfolio';
 import { About } from '@/components/sections/About';
+import { Stats } from '@/components/sections/Stats';
+import { TrustBadges } from '@/components/sections/TrustBadges';
+import { FeaturesWithList } from '@/components/sections/FeaturesWithList';
+import { Pricing } from '@/components/sections/Pricing';
+import { DomainSearch } from '@/components/sections/DomainSearch';
+import { FAQ } from '@/components/sections/FAQ';
+import { FooterSection } from '@/components/sections/FooterSection';
 import { SectionComponent, SiteLayout, SiteTheme } from '@/lib/supabase/types';
 
 // Component registry - maps type strings to React components
 const COMPONENT_MAP = {
   Hero,
   Features: FeatureGrid,
+  FeatureGrid: FeatureGrid,
   ContactForm,
   Testimonials,
   CTA,
   Portfolio,
-  About
+  About,
+  Stats,
+  TrustBadges,
+  FeaturesWithList,
+  Pricing,
+  DomainSearch,
+  FAQ,
+  FooterSection
 } as const;
 
 interface DynamicRendererProps {

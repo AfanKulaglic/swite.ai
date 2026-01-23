@@ -1,7 +1,46 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/auth/AuthContext';
 
 export default function LoginPage() {
+  const router = useRouter();
+  const { signIn, user, loading: authLoading } = useAuth();
+  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.push('/dashboard');
+    }
+  }, [user, authLoading, router]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const { error } = await signIn(email, password);
+      if (error) {
+        setError(error.message);
+      } else {
+        router.push('/dashboard');
+      }
+    } catch (err: any) {
+      setError(err.message || 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="h-screen flex overflow-hidden bg-black text-white">
       {/* Left Side - Login Form */}
@@ -42,14 +81,24 @@ export default function LoginPage() {
             </p>
           </div>
 
+          {/* Error Message */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+              {error}
+            </div>
+          )}
+
           {/* Form */}
-          <form className="space-y-4 mb-8">
+          <form onSubmit={handleSubmit} className="space-y-4 mb-8">
             <div>
               <label className="block text-[10px] font-light text-white/40 mb-2 uppercase tracking-wider">
                 Email Address
               </label>
               <input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
                 className="w-full px-4 py-3 bg-white/5 border border-white/10 focus:border-[#4169E1]/40 focus:bg-white/[0.07] outline-none transition-all duration-300 text-sm font-light"
                 placeholder="you@company.com"
               />
@@ -66,6 +115,9 @@ export default function LoginPage() {
               </div>
               <input
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
                 className="w-full px-4 py-3 bg-white/5 border border-white/10 focus:border-[#4169E1]/40 focus:bg-white/[0.07] outline-none transition-all duration-300 text-sm font-light"
                 placeholder="••••••••"
               />
@@ -73,9 +125,10 @@ export default function LoginPage() {
 
             <button 
               type="submit"
-              className="w-full px-6 py-4 bg-gradient-to-r from-[#4169E1] to-[#6B46C1] text-white text-sm font-medium tracking-wide hover:opacity-90 transition-all duration-300"
+              disabled={loading}
+              className="w-full px-6 py-4 bg-gradient-to-r from-[#4169E1] to-[#6B46C1] text-white text-sm font-medium tracking-wide hover:opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Sign In
+              {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 

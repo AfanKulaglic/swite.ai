@@ -1,86 +1,88 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Button from '@/components/ui/Button';
 import { TemplateService } from '@/lib/services/templateService';
 import { Database } from '@/lib/supabase/types';
-import Button from '@/components/ui/Button';
 
 type Template = Database['public']['Tables']['templates']['Row'];
-type Category = Database['public']['Tables']['template_categories']['Row'];
+
+const categories = [
+  { name: 'All', icon: '🌐', slug: null },
+  { name: 'Business', icon: '💼', slug: 'business' },
+  { name: 'Portfolio', icon: '🎨', slug: 'portfolio' },
+  { name: 'Agency', icon: '✨', slug: 'agency' },
+  { name: 'SaaS', icon: '💻', slug: 'saas' },
+  { name: 'Health', icon: '🌿', slug: 'health' },
+];
 
 export default function TemplatesPage() {
-  const [templates, setTemplates] = useState<Template[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [templates, setTemplates] = useState<Template[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const availableTags = ['modern', 'minimalist', 'bold', 'elegant', 'professional', 'creative', 'calm', 'nature', 'tech', 'office'];
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadData();
+    loadTemplates();
   }, []);
 
-  useEffect(() => {
-    filterTemplates();
-  }, [selectedCategory, selectedTags]);
-
-  const loadData = async () => {
-    try {
-      const [templatesData, categoriesData] = await Promise.all([
-        TemplateService.getAllTemplates(),
-        TemplateService.getCategories()
-      ]);
-      setTemplates(templatesData);
-      setCategories(categoriesData);
-    } catch (error) {
-      console.error('Error loading templates:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterTemplates = async () => {
+  const loadTemplates = async () => {
     try {
       setLoading(true);
-      
-      if (selectedTags.length > 0) {
-        const filtered = await TemplateService.searchByTags(
-          selectedTags,
-          selectedCategory || undefined
-        );
-        setTemplates(filtered as any);
-      } else if (selectedCategory) {
-        const category = categories.find(c => c.id === selectedCategory);
-        if (category) {
-          const filtered = await TemplateService.getTemplatesByCategory(category.slug);
-          setTemplates(filtered as any);
-        }
-      } else {
-        const all = await TemplateService.getAllTemplates();
-        setTemplates(all);
-      }
-    } catch (error) {
-      console.error('Error filtering templates:', error);
+      const data = await TemplateService.getAllTemplates();
+      setTemplates(data || []);
+    } catch (err) {
+      console.error('Error loading templates:', err);
+      setError('Failed to load templates');
     } finally {
       setLoading(false);
     }
   };
 
-  const toggleTag = (tag: string) => {
-    setSelectedTags(prev =>
-      prev.includes(tag)
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
-    );
+  // Filter templates by category (using tags since we don't have category_id populated)
+  const filteredTemplates = selectedCategory 
+    ? templates.filter(t => t.tags?.includes(selectedCategory))
+    : templates;
+
+  // Get theme colors from template
+  const getThemeColors = (template: Template) => {
+    const theme = typeof template.theme === 'string' 
+      ? JSON.parse(template.theme) 
+      : template.theme;
+    return theme?.colors || { primary: '#6D28D9', secondary: '#4C1D95' };
   };
 
-  if (loading && templates.length === 0) {
+  // Get emoji thumbnail based on tags
+  const getThumbnail = (template: Template) => {
+    const tags = template.tags || [];
+    if (tags.includes('hosting') || tags.includes('tech')) return '🌐';
+    if (tags.includes('portfolio')) return '🎨';
+    if (tags.includes('agency')) return '✨';
+    if (tags.includes('business')) return '💼';
+    if (tags.includes('saas')) return '💻';
+    if (tags.includes('health')) return '🌿';
+    return '🚀';
+  };
+
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen py-20 px-6 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
-          <p>Loading templates...</p>
+          <p className="text-white">Loading templates...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen py-20 px-6 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-white mb-4">Error Loading Templates</h1>
+          <p className="text-white/60 mb-8">{error}</p>
+          <Button onClick={loadTemplates}>Try Again</Button>
         </div>
       </div>
     );
@@ -99,136 +101,110 @@ export default function TemplatesPage() {
           </p>
         </div>
 
-        {/* Filters */}
-        <div className="mb-12 space-y-6">
-          {/* Categories */}
-          <div>
-            <h3 className="text-sm font-medium mb-3 opacity-70">CATEGORIES</h3>
-            <div className="flex flex-wrap gap-3">
+        {/* Categories */}
+        <div className="mb-12">
+          <div className="flex flex-wrap justify-center gap-3">
+            {categories.map((category) => (
               <button
-                onClick={() => setSelectedCategory(null)}
+                key={category.name}
+                onClick={() => setSelectedCategory(category.slug)}
                 className={`px-4 py-2 rounded-full border transition-all ${
-                  selectedCategory === null
+                  selectedCategory === category.slug
                     ? 'bg-white text-black border-white'
                     : 'border-white/20 hover:border-white/40'
                 }`}
               >
-                All
+                {category.icon} {category.name}
               </button>
-              {categories.map(category => (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`px-4 py-2 rounded-full border transition-all ${
-                    selectedCategory === category.id
-                      ? 'bg-white text-black border-white'
-                      : 'border-white/20 hover:border-white/40'
-                  }`}
-                >
-                  {category.icon} {category.name}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Tags */}
-          <div>
-            <h3 className="text-sm font-medium mb-3 opacity-70">STYLE</h3>
-            <div className="flex flex-wrap gap-3">
-              {availableTags.map(tag => (
-                <button
-                  key={tag}
-                  onClick={() => toggleTag(tag)}
-                  className={`px-4 py-2 rounded-full border transition-all ${
-                    selectedTags.includes(tag)
-                      ? 'bg-blue-500 border-blue-500'
-                      : 'border-white/20 hover:border-white/40'
-                  }`}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
 
         {/* Templates Grid */}
-        {loading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
-            <p>Filtering templates...</p>
-          </div>
-        ) : templates.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-xl opacity-70">No templates found with these filters</p>
-            <Button
-              onClick={() => {
-                setSelectedCategory(null);
-                setSelectedTags([]);
-              }}
-              className="mt-4"
-            >
-              Clear Filters
+        {filteredTemplates.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-xl opacity-70 mb-6">
+              {selectedCategory 
+                ? `No templates found in "${selectedCategory}" category` 
+                : 'No templates available yet'}
+            </p>
+            <Button onClick={() => setSelectedCategory(null)}>
+              View All Templates
             </Button>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {templates.map(template => (
-              <div
-                key={template.id}
-                className="group relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-white/30 transition-all"
-              >
-                {/* Thumbnail */}
-                <div className="aspect-video bg-gradient-to-br from-blue-600/20 to-purple-600/20 relative overflow-hidden">
-                  {template.thumbnail_url ? (
-                    <img
-                      src={template.thumbnail_url}
-                      alt={template.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-4xl">
-                      🎨
+            {filteredTemplates.map((template) => {
+              const colors = getThemeColors(template);
+              const thumbnail = getThumbnail(template);
+              
+              return (
+                <div
+                  key={template.id}
+                  className="group relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-white/30 transition-all"
+                >
+                  {/* Thumbnail with theme colors */}
+                  <div 
+                    className="aspect-video relative overflow-hidden flex items-center justify-center"
+                    style={{ 
+                      background: `linear-gradient(135deg, ${colors.primary}40, ${colors.secondary}40)` 
+                    }}
+                  >
+                    <span className="text-6xl">{thumbnail}</span>
+                    
+                    {/* Overlay on hover */}
+                    <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                      <Button href={`/templates/${template.slug}`} variant="ghost" className="border border-white/20">
+                        Preview
+                      </Button>
+                      <Button href={`/studio/builder?template=${template.slug}`}>
+                        Use Template
+                      </Button>
                     </div>
-                  )}
-                  
-                  {/* Overlay on hover */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                    <Button href={`/studio/editor?template=${template.id}`}>
-                      Use Template
-                    </Button>
-                    <Button href={`/templates/${template.slug}`} variant="outline">
-                      Preview
-                    </Button>
                   </div>
-                </div>
 
-                {/* Info */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-2">{template.name}</h3>
-                  <p className="text-sm opacity-70 mb-4">{template.description}</p>
-                  
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
-                    {template.tags.slice(0, 3).map(tag => (
-                      <span
-                        key={tag}
-                        className="text-xs px-2 py-1 rounded-full bg-white/10"
-                      >
-                        {tag}
+                  {/* Info */}
+                  <div className="p-6">
+                    <div className="flex items-center gap-2 mb-2">
+                      {template.is_premium && (
+                        <span className="text-xs px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-400">
+                          Premium
+                        </span>
+                      )}
+                      <span className="text-xs px-2 py-1 rounded-full bg-white/10">
+                        {template.tags?.[0] || 'Template'}
                       </span>
-                    ))}
-                  </div>
-
-                  {/* Usage count */}
-                  <div className="mt-4 text-xs opacity-50">
-                    Used {template.usage_count} times
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">{template.name}</h3>
+                    <p className="text-sm opacity-70 mb-4">{template.description}</p>
+                    
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2">
+                      {template.tags?.slice(0, 3).map((tag: string) => (
+                        <span
+                          key={tag}
+                          className="text-xs px-2 py-1 rounded-full border border-white/10"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
+
+        {/* CTA */}
+        <div className="text-center mt-16">
+          <p className="text-lg opacity-70 mb-6">
+            Can't find what you're looking for? Build from scratch with AI
+          </p>
+          <Button href="/studio/builder" size="lg">
+            Start with Blank Canvas
+          </Button>
+        </div>
       </div>
     </div>
   );

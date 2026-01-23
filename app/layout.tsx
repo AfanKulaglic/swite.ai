@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AnimatedBackground from "@/components/ui/AnimatedBackground";
 import { usePathname } from "next/navigation";
+import { AuthProvider } from "@/lib/auth/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,12 +26,14 @@ export default function RootLayout({
         <meta name="description" content="Build modern, production-ready websites using AI — no designers, no developers." />
       </head>
       <body className={inter.className}>
-        {/* Global Animated Background */}
-        {!isStudioPage && !isAuthPage && <AnimatedBackground />}
-        
-        {!isStudioPage && !isAuthPage && <Navbar />}
-        <main className="relative z-10">{children}</main>
-        {!isStudioPage && !isAuthPage && <Footer />}
+        <AuthProvider>
+          {/* Global Animated Background */}
+          {!isStudioPage && !isAuthPage && <AnimatedBackground />}
+          
+          {!isStudioPage && !isAuthPage && <Navbar />}
+          <main className="relative z-10">{children}</main>
+          {!isStudioPage && !isAuthPage && <Footer />}
+        </AuthProvider>
       </body>
     </html>
   );

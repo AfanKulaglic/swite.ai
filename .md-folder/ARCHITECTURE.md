@@ -122,60 +122,186 @@ Public can view via:
 
 ## 🗄️ Database Schema
 
-### Core Tables
+> **Status:** ✅ Migration Complete (January 2026)
+
+### Complete SQL Schema
+
+```sql
+-- WARNING: This schema is for context only and is not meant to be run.
+-- Table order and constraints may not be valid for execution.
+
+CREATE TABLE public.profiles (
+  id uuid NOT NULL,
+  email text NOT NULL UNIQUE,
+  full_name text,
+  avatar_url text,
+  subscription_tier text DEFAULT 'free'::text CHECK (subscription_tier = ANY (ARRAY['free'::text, 'pro'::text, 'business'::text, 'enterprise'::text])),
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT profiles_pkey PRIMARY KEY (id),
+  CONSTRAINT profiles_id_fkey FOREIGN KEY (id) REFERENCES auth.users(id)
+);
+
+CREATE TABLE public.template_categories (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  name text NOT NULL UNIQUE,
+  slug text NOT NULL UNIQUE,
+  description text,
+  icon text,
+  created_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT template_categories_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE public.template_tags (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  name text NOT NULL UNIQUE,
+  slug text NOT NULL UNIQUE,
+  category text,
+  created_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT template_tags_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE public.templates (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  name text NOT NULL,
+  slug text NOT NULL UNIQUE,
+  description text,
+  thumbnail_url text,
+  preview_url text,
+  layout jsonb NOT NULL DEFAULT '[]'::jsonb,
+  theme jsonb NOT NULL DEFAULT '{}'::jsonb,
+  category_id uuid,
+  tags ARRAY DEFAULT '{}'::text[],
+  embedding USER-DEFINED,  -- pgvector for AI semantic search
+  usage_count integer DEFAULT 0,
+  is_active boolean DEFAULT true,
+  is_premium boolean DEFAULT false,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT templates_pkey PRIMARY KEY (id),
+  CONSTRAINT templates_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.template_categories(id)
+);
+
+CREATE TABLE public.user_sites (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  user_id uuid NOT NULL,
+  template_id uuid,
+  name text NOT NULL,
+  slug text NOT NULL,
+  description text,
+  favicon_url text,
+  layout jsonb NOT NULL DEFAULT '[]'::jsonb,
+  theme jsonb NOT NULL DEFAULT '{}'::jsonb,
+  meta_title text,
+  meta_description text,
+  meta_keywords ARRAY,
+  is_published boolean DEFAULT false,
+  published_at timestamp with time zone,
+  custom_domain text UNIQUE,
+  subdomain text UNIQUE,
+  view_count integer DEFAULT 0,
+  last_edited_at timestamp with time zone DEFAULT now(),
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT user_sites_pkey PRIMARY KEY (id),
+  CONSTRAINT user_sites_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
+  CONSTRAINT user_sites_template_id_fkey FOREIGN KEY (template_id) REFERENCES public.templates(id)
+);
+
+CREATE TABLE public.site_versions (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  site_id uuid NOT NULL,
+  version_number integer NOT NULL,
+  layout jsonb NOT NULL,
+  theme jsonb NOT NULL,
+  change_description text,
+  created_by uuid,
+  created_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT site_versions_pkey PRIMARY KEY (id),
+  CONSTRAINT site_versions_site_id_fkey FOREIGN KEY (site_id) REFERENCES public.user_sites(id),
+  CONSTRAINT site_versions_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.profiles(id)
+);
+
+CREATE TABLE public.assets (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  user_id uuid NOT NULL,
+  site_id uuid,
+  name text NOT NULL,
+  file_path text NOT NULL,
+  file_url text NOT NULL,
+  file_type text NOT NULL,
+  mime_type text,
+  file_size bigint,
+  width integer,
+  height integer,
+  alt_text text,
+  folder text DEFAULT 'root'::text,
+  tags ARRAY,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT assets_pkey PRIMARY KEY (id),
+  CONSTRAINT assets_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
+  CONSTRAINT assets_site_id_fkey FOREIGN KEY (site_id) REFERENCES public.user_sites(id)
+);
+
+CREATE TABLE public.components (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  name text NOT NULL,
+  type text NOT NULL,
+  category text,
+  description text,
+  thumbnail_url text,
+  props_schema jsonb NOT NULL DEFAULT '{}'::jsonb,
+  default_props jsonb NOT NULL DEFAULT '{}'::jsonb,
+  component_path text NOT NULL,
+  tags ARRAY,
+  is_premium boolean DEFAULT false,
+  usage_count integer DEFAULT 0,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT components_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE public.ai_generations (
+  id uuid NOT NULL DEFAULT uuid_generate_v4(),
+  user_id uuid NOT NULL,
+  site_id uuid,
+  prompt text NOT NULL,
+  template_id uuid,
+  generated_layout jsonb,
+  generated_content jsonb,
+  model_used text,
+  tokens_used integer,
+  generation_time_ms integer,
+  status text DEFAULT 'pending'::text CHECK (status = ANY (ARRAY['pending'::text, 'completed'::text, 'failed'::text])),
+  error_message text,
+  created_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT ai_generations_pkey PRIMARY KEY (id),
+  CONSTRAINT ai_generations_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.profiles(id),
+  CONSTRAINT ai_generations_site_id_fkey FOREIGN KEY (site_id) REFERENCES public.user_sites(id),
+  CONSTRAINT ai_generations_template_id_fkey FOREIGN KEY (template_id) REFERENCES public.templates(id)
+);
 ```
-profiles (users)
-├── id (UUID, PK)
-├── email (TEXT)
-├── subscription_tier (TEXT)
-└── created_at (TIMESTAMP)
 
-templates (master templates)
-├── id (UUID, PK)
-├── name (TEXT)
-├── slug (TEXT, UNIQUE)
-├── layout (JSONB) ← Component structure
-├── theme (JSONB) ← Colors, fonts
-├── embedding (VECTOR) ← AI search
-├── category_id (UUID, FK)
-├── tags (TEXT[])
-└── usage_count (INTEGER)
+### Table Summary
 
-user_sites (user websites)
-├── id (UUID, PK)
-├── user_id (UUID, FK)
-├── template_id (UUID, FK)
-├── name (TEXT)
-├── slug (TEXT)
-├── layout (JSONB) ← Editable copy
-├── theme (JSONB) ← Editable copy
-├── is_published (BOOLEAN)
-├── subdomain (TEXT, UNIQUE)
-└── custom_domain (TEXT, UNIQUE)
-
-site_versions (version history)
-├── id (UUID, PK)
-├── site_id (UUID, FK)
-├── version_number (INTEGER)
-├── layout (JSONB)
-├── theme (JSONB)
-└── created_at (TIMESTAMP)
-
-assets (uploaded files)
-├── id (UUID, PK)
-├── user_id (UUID, FK)
-├── site_id (UUID, FK)
-├── file_path (TEXT)
-├── file_url (TEXT)
-├── file_type (TEXT)
-├── file_size (BIGINT)
-└── folder (TEXT)
-```
+| Table | Purpose | Key Fields |
+|-------|---------|------------|
+| `profiles` | User accounts (extends auth.users) | email, subscription_tier |
+| `template_categories` | Template organization | name, slug, icon |
+| `template_tags` | Style tags for filtering | name, slug, category |
+| `templates` | Master templates | layout (JSON), theme (JSON), embedding (vector) |
+| `user_sites` | User-created websites | layout (JSON), is_published, subdomain |
+| `site_versions` | Version history for undo/redo | version_number, layout, theme |
+| `assets` | Uploaded files (images, videos) | file_url, file_type, folder |
+| `components` | Master component library | props_schema, default_props |
+| `ai_generations` | AI generation history | prompt, generated_layout, status |
 
 ### Relationships
 ```
 profiles (1) ──→ (N) user_sites
 profiles (1) ──→ (N) assets
+profiles (1) ──→ (N) ai_generations
 templates (1) ──→ (N) user_sites
 user_sites (1) ──→ (N) site_versions
 user_sites (1) ──→ (N) assets
@@ -185,6 +311,8 @@ template_categories (1) ──→ (N) templates
 ## 🔒 Security Model
 
 ### Row Level Security (RLS)
+
+> **Status:** ✅ RLS Policies Applied
 
 #### User Sites
 ```sql
@@ -212,14 +340,95 @@ DELETE: auth.uid() = user_id
 
 #### Templates
 ```sql
--- Everyone can view templates
-SELECT: true
+-- Everyone can view active templates
+SELECT: is_active = true
 
 -- Only admins can modify templates
 INSERT/UPDATE/DELETE: admin role check
 ```
 
-## 📦 Component Architecture
+#### Profiles
+```sql
+-- Users can view their own profile
+SELECT: auth.uid() = id
+
+-- Users can update their own profile
+UPDATE: auth.uid() = id
+```
+
+## 📦 Storage Architecture
+
+> **Status:** ✅ Buckets Created & RLS Applied
+
+### Storage Buckets
+
+| Bucket | Public | Size Limit | Allowed Types | Purpose |
+|--------|--------|------------|---------------|---------|
+| `templates` | ✅ Yes | 5MB | image/* | Template thumbnails & previews |
+| `user-assets` | ✅ Yes | 10MB | image/*, video/* | User uploaded images & videos |
+| `site-exports` | ❌ No | 50MB | application/zip, application/json | Site backups & exports |
+
+### Bucket Structure
+```
+templates/
+├── {templateId}/
+│   ├── {templateId}-thumbnail.png
+│   └── {templateId}-preview.png
+
+user-assets/
+├── {userId}/
+│   ├── root/
+│   │   └── image1.png
+│   ├── hero-images/
+│   │   ├── hero-bg-1.jpg
+│   │   └── hero-bg-2.jpg
+│   └── portfolio/
+│       └── project-1.png
+
+site-exports/
+└── {userId}/
+    └── site-{siteId}-{timestamp}.zip
+```
+
+### Storage RLS Policies
+
+```sql
+-- TEMPLATES BUCKET (public read)
+CREATE POLICY "Public read access" ON storage.objects
+FOR SELECT USING (bucket_id = 'templates');
+
+CREATE POLICY "Authenticated users can upload" ON storage.objects
+FOR INSERT WITH CHECK (bucket_id = 'templates' AND auth.role() = 'authenticated');
+
+-- USER-ASSETS BUCKET (public read, user-scoped write)
+CREATE POLICY "Public read access" ON storage.objects
+FOR SELECT USING (bucket_id = 'user-assets');
+
+CREATE POLICY "Users can upload own assets" ON storage.objects
+FOR INSERT WITH CHECK (
+  bucket_id = 'user-assets' 
+  AND auth.uid()::text = (storage.foldername(name))[1]
+);
+
+CREATE POLICY "Users can delete own assets" ON storage.objects
+FOR DELETE USING (
+  bucket_id = 'user-assets' 
+  AND auth.uid()::text = (storage.foldername(name))[1]
+);
+
+-- SITE-EXPORTS BUCKET (private, user-scoped)
+CREATE POLICY "Users can access own exports" ON storage.objects
+FOR SELECT USING (
+  bucket_id = 'site-exports' 
+  AND auth.uid()::text = (storage.foldername(name))[1]
+);
+
+CREATE POLICY "Users can create own exports" ON storage.objects
+FOR INSERT WITH CHECK (
+  bucket_id = 'site-exports' 
+  AND auth.uid()::text = (storage.foldername(name))[1]
+);
+```
 
 ### Component-as-Data Pattern
 ```
