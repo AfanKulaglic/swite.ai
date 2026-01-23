@@ -1,145 +1,234 @@
-export default function TemplatesPage() {
-  const categories = [
-    "All",
-    "Business",
-    "Portfolio",
-    "E-commerce",
-    "Blog",
-    "Restaurant",
-    "Agency",
-  ];
+'use client';
 
-  const templates = [
-    {
-      name: "WebSphere",
-      category: "Business",
-      description: "Professional hosting and cloud solutions",
-      image: "/templates/websphere/preview.jpg",
-    },
-    {
-      name: "Portfolio Pro",
-      category: "Portfolio",
-      description: "Showcase your creative work",
-      image: "/templates/portfolio/preview.jpg",
-    },
-    {
-      name: "Shop Modern",
-      category: "E-commerce",
-      description: "Clean online store design",
-      image: "/templates/shop/preview.jpg",
-    },
-    {
-      name: "Blog Minimal",
-      category: "Blog",
-      description: "Focus on your content",
-      image: "/templates/blog/preview.jpg",
-    },
-    {
-      name: "Restaurant Deluxe",
-      category: "Restaurant",
-      description: "Menus and reservations",
-      image: "/templates/restaurant/preview.jpg",
-    },
-    {
-      name: "Agency Bold",
-      category: "Agency",
-      description: "Stand out from the crowd",
-      image: "/templates/agency/preview.jpg",
-    },
-    {
-      name: "SaaS Launch",
-      category: "Business",
-      description: "Perfect for software products",
-      image: "/templates/saas/preview.jpg",
-    },
-    {
-      name: "Consulting Pro",
-      category: "Business",
-      description: "Professional services",
-      image: "/templates/consulting/preview.jpg",
-    },
-    {
-      name: "Photography",
-      category: "Portfolio",
-      description: "Image-focused layouts",
-      image: "/templates/photography/preview.jpg",
-    },
-  ];
+import { useEffect, useState } from 'react';
+import { TemplateService } from '@/lib/services/templateService';
+import { Database } from '@/lib/supabase/types';
+import Button from '@/components/ui/Button';
+
+type Template = Database['public']['Tables']['templates']['Row'];
+type Category = Database['public']['Tables']['template_categories']['Row'];
+
+export default function TemplatesPage() {
+  const [templates, setTemplates] = useState<Template[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const availableTags = ['modern', 'minimalist', 'bold', 'elegant', 'professional', 'creative', 'calm', 'nature', 'tech', 'office'];
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  useEffect(() => {
+    filterTemplates();
+  }, [selectedCategory, selectedTags]);
+
+  const loadData = async () => {
+    try {
+      const [templatesData, categoriesData] = await Promise.all([
+        TemplateService.getAllTemplates(),
+        TemplateService.getCategories()
+      ]);
+      setTemplates(templatesData);
+      setCategories(categoriesData);
+    } catch (error) {
+      console.error('Error loading templates:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filterTemplates = async () => {
+    try {
+      setLoading(true);
+      
+      if (selectedTags.length > 0) {
+        const filtered = await TemplateService.searchByTags(
+          selectedTags,
+          selectedCategory || undefined
+        );
+        setTemplates(filtered as any);
+      } else if (selectedCategory) {
+        const category = categories.find(c => c.id === selectedCategory);
+        if (category) {
+          const filtered = await TemplateService.getTemplatesByCategory(category.slug);
+          setTemplates(filtered as any);
+        }
+      } else {
+        const all = await TemplateService.getAllTemplates();
+        setTemplates(all);
+      }
+    } catch (error) {
+      console.error('Error filtering templates:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prev =>
+      prev.includes(tag)
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
+
+  if (loading && templates.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
+          <p>Loading templates...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen pt-32 px-6">
-      <div className="max-w-7xl mx-auto py-24">
+    <div className="min-h-screen py-20 px-6">
+      <div className="container mx-auto max-w-7xl">
         {/* Header */}
-        <div className="text-center mb-20">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            Templates
+        <div className="text-center mb-16">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+            Choose Your Template
           </h1>
-          <p className="text-xl text-white/50 max-w-2xl mx-auto">
-            Professional designs for every industry. Fully customizable.
+          <p className="text-xl opacity-80 max-w-2xl mx-auto">
+            Start with a professionally designed template and customize it to match your vision
           </p>
         </div>
 
-        {/* Categories */}
-        <div className="flex flex-wrap justify-center gap-3 mb-16">
-          {categories.map((category) => (
-            <button
-              key={category}
-              className="px-6 py-2.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-sm font-medium"
-            >
-              {category}
-            </button>
-          ))}
+        {/* Filters */}
+        <div className="mb-12 space-y-6">
+          {/* Categories */}
+          <div>
+            <h3 className="text-sm font-medium mb-3 opacity-70">CATEGORIES</h3>
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => setSelectedCategory(null)}
+                className={`px-4 py-2 rounded-full border transition-all ${
+                  selectedCategory === null
+                    ? 'bg-white text-black border-white'
+                    : 'border-white/20 hover:border-white/40'
+                }`}
+              >
+                All
+              </button>
+              {categories.map(category => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`px-4 py-2 rounded-full border transition-all ${
+                    selectedCategory === category.id
+                      ? 'bg-white text-black border-white'
+                      : 'border-white/20 hover:border-white/40'
+                  }`}
+                >
+                  {category.icon} {category.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Tags */}
+          <div>
+            <h3 className="text-sm font-medium mb-3 opacity-70">STYLE</h3>
+            <div className="flex flex-wrap gap-3">
+              {availableTags.map(tag => (
+                <button
+                  key={tag}
+                  onClick={() => toggleTag(tag)}
+                  className={`px-4 py-2 rounded-full border transition-all ${
+                    selectedTags.includes(tag)
+                      ? 'bg-blue-500 border-blue-500'
+                      : 'border-white/20 hover:border-white/40'
+                  }`}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Templates Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {templates.map((template, index) => (
-            <a
-              key={index}
-              href="/studio"
-              className="group block"
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4" />
+            <p>Filtering templates...</p>
+          </div>
+        ) : templates.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-xl opacity-70">No templates found with these filters</p>
+            <Button
+              onClick={() => {
+                setSelectedCategory(null);
+                setSelectedTags([]);
+              }}
+              className="mt-4"
             >
-              <div className="border border-white/10 rounded-lg overflow-hidden hover:border-white/20 transition-all">
-                {/* Preview Image Placeholder */}
-                <div className="aspect-[4/3] bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">🌐</div>
-                    <div className="text-sm text-white/40">Preview</div>
+              Clear Filters
+            </Button>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {templates.map(template => (
+              <div
+                key={template.id}
+                className="group relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-white/30 transition-all"
+              >
+                {/* Thumbnail */}
+                <div className="aspect-video bg-gradient-to-br from-blue-600/20 to-purple-600/20 relative overflow-hidden">
+                  {template.thumbnail_url ? (
+                    <img
+                      src={template.thumbnail_url}
+                      alt={template.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-4xl">
+                      🎨
+                    </div>
+                  )}
+                  
+                  {/* Overlay on hover */}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                    <Button href={`/studio/editor?template=${template.id}`}>
+                      Use Template
+                    </Button>
+                    <Button href={`/templates/${template.slug}`} variant="outline">
+                      Preview
+                    </Button>
                   </div>
                 </div>
-                
+
                 {/* Info */}
                 <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-semibold group-hover:text-white transition-colors">
-                      {template.name}
-                    </h3>
-                    <span className="text-xs text-white/40 px-2 py-1 rounded bg-white/5">
-                      {template.category}
-                    </span>
+                  <h3 className="text-xl font-bold mb-2">{template.name}</h3>
+                  <p className="text-sm opacity-70 mb-4">{template.description}</p>
+                  
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-2">
+                    {template.tags.slice(0, 3).map(tag => (
+                      <span
+                        key={tag}
+                        className="text-xs px-2 py-1 rounded-full bg-white/10"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
-                  <p className="text-sm text-white/50">
-                    {template.description}
-                  </p>
+
+                  {/* Usage count */}
+                  <div className="mt-4 text-xs opacity-50">
+                    Used {template.usage_count} times
+                  </div>
                 </div>
               </div>
-            </a>
-          ))}
-        </div>
-
-        {/* CTA */}
-        <div className="text-center mt-32 pt-20 border-t border-white/10">
-          <h2 className="text-3xl font-bold mb-4">Can't find what you need?</h2>
-          <p className="text-white/50 mb-8">
-            Start from scratch with our AI builder
-          </p>
-          <a
-            href="/studio"
-            className="inline-block px-8 py-4 rounded-lg bg-white text-black font-medium hover:bg-white/90 transition-all"
-          >
-            Build Custom Site
-          </a>
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

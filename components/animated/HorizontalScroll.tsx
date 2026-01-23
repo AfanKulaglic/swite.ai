@@ -41,7 +41,7 @@ export default function HorizontalScroll() {
           opacity: 0,
           scrollTrigger: {
             trigger: section,
-            containerAnimation: gsap.getProperty(scrollRef.current, 'x'),
+            containerAnimation: gsap.getProperty(scrollRef.current, 'x') as any,
             start: 'left 80%',
             end: 'left 20%',
             scrub: 1,
