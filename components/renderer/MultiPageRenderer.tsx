@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 import { DynamicRenderer } from './DynamicRenderer';
 import { SiteLayout, SiteTheme, SitePage } from '@/lib/supabase/types';
 
@@ -10,6 +11,7 @@ interface MultiPageRendererProps {
   editable?: boolean;
   onSectionClick?: (sectionId: string) => void;
   currentPath?: string;
+  onPageChange?: (path: string) => void;
 }
 
 /**
@@ -21,13 +23,38 @@ export function MultiPageRenderer({
   theme,
   editable = false,
   onSectionClick,
-  currentPath
+  currentPath,
+  onPageChange
 }: MultiPageRendererProps) {
   const pathname = usePathname();
   const activePath = currentPath || pathname;
 
   // Check if this is a multi-page layout
   const isMultiPage = layout.pages && layout.pages.length > 0;
+
+  // Intercept link clicks when onPageChange is provided (builder mode)
+  useEffect(() => {
+    if (!onPageChange) return;
+
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const link = target.closest('a');
+      
+      if (link && link.href) {
+        const url = new URL(link.href);
+        const path = url.pathname;
+        
+        // Check if this is an internal page link
+        if (layout.pages?.some(page => page.path === path)) {
+          e.preventDefault();
+          onPageChange(path);
+        }
+      }
+    };
+
+    document.addEventListener('click', handleClick, true);
+    return () => document.removeEventListener('click', handleClick, true);
+  }, [onPageChange, layout.pages]);
 
   if (!isMultiPage) {
     // Legacy single-page layout - render all sections

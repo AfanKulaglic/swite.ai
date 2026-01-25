@@ -59,6 +59,7 @@ export function Navbar({
               <Link
                 key={link.href}
                 href={link.href}
+                prefetch={false}
                 className="px-4 py-2 rounded-xl text-sm font-medium text-white/60 hover:text-white hover:bg-white/5 transition-all duration-300"
               >
                 {link.label}

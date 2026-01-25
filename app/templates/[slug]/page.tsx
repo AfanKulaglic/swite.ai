@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { TemplateService } from '@/lib/services/templateService';
 import { DynamicRenderer } from '@/components/renderer/DynamicRenderer';
+import { MultiPageRenderer } from '@/components/renderer/MultiPageRenderer';
 import Button from '@/components/ui/Button';
 import { Database } from '@/lib/supabase/types';
 
@@ -111,7 +112,14 @@ export default function TemplatePreviewPage() {
 
       {/* Template Preview */}
       <div className="pt-20">
-        {layout && layout.sections && layout.sections.length > 0 ? (
+        {layout && layout.pages && layout.pages.length > 0 ? (
+          // Multi-page template
+          <MultiPageRenderer 
+            layout={layout} 
+            theme={theme}
+          />
+        ) : layout && layout.sections && layout.sections.length > 0 ? (
+          // Single-page template (legacy)
           <DynamicRenderer 
             layout={layout} 
             theme={theme}

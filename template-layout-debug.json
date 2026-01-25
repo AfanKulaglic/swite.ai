@@ -1,0 +1,1013 @@
+{
+  "pages": [
+    {
+      "id": "home",
+      "meta": {
+        "title": "WebSphere - Premium Web Hosting",
+        "keywords": [
+          "web hosting",
+          "cloud hosting"
+        ],
+        "description": "Enterprise-grade web hosting solutions"
+      },
+      "name": "Home",
+      "path": "/",
+      "sections": [
+        {
+          "id": "navbar_1",
+          "type": "Navbar",
+          "order": 0,
+          "props": {
+            "links": [
+              {
+                "href": "/",
+                "label": "Home"
+              },
+              {
+                "href": "/hosting",
+                "label": "Hosting"
+              },
+              {
+                "href": "/domains",
+                "label": "Domains"
+              },
+              {
+                "href": "/pricing",
+                "label": "Pricing"
+              },
+              {
+                "href": "/blog",
+                "label": "Blog"
+              },
+              {
+                "href": "/contact",
+                "label": "Contact"
+              }
+            ],
+            "logoText": "WEBSPHERE",
+            "ctaButton": {
+              "href": "/pricing",
+              "text": "Get Started"
+            },
+            "secondaryButton": {
+              "href": "/login",
+              "text": "Sign In"
+            }
+          }
+        },
+        {
+          "id": "hero_1",
+          "type": "Hero",
+          "order": 1,
+          "props": {
+            "badge": "🚀 Limited Offer: 50% OFF First Year",
+            "stats": [
+              {
+                "label": "Uptime SLA",
+                "value": "99.9%"
+              },
+              {
+                "label": "Support",
+                "value": "24/7"
+              },
+              {
+                "label": "Happy Clients",
+                "value": "50K+"
+              }
+            ],
+            "title": "Host Your Site with Top-Tier Reliability",
+            "ctaLink": "/pricing",
+            "ctaText": "Get Started Now",
+            "variant": "split",
+            "subtitle": "Enterprise-grade web hosting solutions designed for your success. Lightning-fast performance, military-grade security, and 24/7 expert support included.",
+            "heroImage": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80",
+            "floatingCards": [
+              {
+                "icon": "⚡",
+                "label": "Load Time",
+                "value": "0.8s",
+                "position": "bottom-left"
+              },
+              {
+                "icon": "🔒",
+                "label": "SSL Secure",
+                "value": "Free",
+                "position": "top-right"
+              }
+            ],
+            "backgroundStyle": "websphere",
+            "secondaryCtaLink": "/pricing",
+            "secondaryCtaText": "View Pricing"
+          }
+        },
+        {
+          "id": "trust_1",
+          "type": "TrustBadges",
+          "order": 2,
+          "props": {
+            "title": "Trusted by 50,000+ Companies Worldwide",
+            "brands": [
+              "TechCorp",
+              "StartupHub",
+              "CloudBase",
+              "DevStudio",
+              "WebFlow",
+              "DataSync"
+            ]
+          }
+        },
+        {
+          "id": "features_1",
+          "type": "FeatureGrid",
+          "order": 3,
+          "props": {
+            "badge": "Features",
+            "title": "Why Choose WebSphere?",
+            "columns": 6,
+            "variant": "websphere",
+            "features": [
+              {
+                "icon": "⚡",
+                "title": "Lightning Fast",
+                "description": "NVMe SSD storage and global CDN integration.",
+                "bulletPoints": [
+                  "NVMe SSD Storage",
+                  "Global CDN Network",
+                  "HTTP/3 Support"
+                ]
+              },
+              {
+                "icon": "🔒",
+                "title": "Secure & Safe",
+                "description": "Military-grade security with free SSL certificates.",
+                "bulletPoints": [
+                  "Free SSL Certificate",
+                  "Daily Backups",
+                  "DDoS Protection"
+                ]
+              },
+              {
+                "icon": "📈",
+                "title": "Infinitely Scalable",
+                "description": "Grow your site with flexible hosting plans.",
+                "bulletPoints": [
+                  "Instant Upgrades",
+                  "Auto-Scaling",
+                  "Load Balancing"
+                ]
+              },
+              {
+                "icon": "💬",
+                "title": "24/7 Expert Support",
+                "description": "Award-winning support team available around the clock.",
+                "bulletPoints": [
+                  "Live Chat Support",
+                  "Phone Support",
+                  "Email Tickets"
+                ]
+              },
+              {
+                "icon": "🎯",
+                "title": "99.9% Uptime",
+                "description": "Industry-leading uptime guarantee backed by SLA.",
+                "bulletPoints": [
+                  "SLA Guarantee",
+                  "Redundant Servers",
+                  "24/7 Monitoring"
+                ]
+              },
+              {
+                "icon": "🚀",
+                "title": "Easy Setup",
+                "description": "Get your site online in minutes with one-click install.",
+                "bulletPoints": [
+                  "1-Click WordPress",
+                  "Website Builder",
+                  "Free Migration"
+                ]
+              }
+            ],
+            "subtitle": "Everything you need for a successful online presence"
+          }
+        },
+        {
+          "id": "stats_1",
+          "type": "Stats",
+          "order": 4,
+          "props": {
+            "stats": [
+              {
+                "label": "Active Websites",
+                "value": "50,000+",
+                "description": "Hosted globally"
+              },
+              {
+                "label": "Uptime Guarantee",
+                "value": "99.9%",
+                "description": "SLA backed"
+              },
+              {
+                "label": "Expert Support",
+                "value": "24/7",
+                "description": "Always available"
+              },
+              {
+                "label": "Years Experience",
+                "value": "15+",
+                "description": "Industry leader"
+              }
+            ],
+            "title": "Trusted by Industry Leaders",
+            "variant": "gradient",
+            "subtitle": "Join thousands of successful businesses worldwide"
+          }
+        },
+        {
+          "id": "pricing_1",
+          "type": "Pricing",
+          "order": 5,
+          "props": {
+            "badge": "Pricing",
+            "plans": [
+              {
+                "name": "Starter",
+                "price": "$4.99",
+                "period": "/month",
+                "ctaLink": "/pricing",
+                "ctaText": "Get Started",
+                "popular": false,
+                "features": [
+                  "10 GB SSD Storage",
+                  "1 Website",
+                  "Free SSL Certificate",
+                  "24/7 Support",
+                  "Daily Backups"
+                ],
+                "description": "Perfect for personal websites and blogs"
+              },
+              {
+                "name": "Business",
+                "price": "$9.99",
+                "period": "/month",
+                "ctaLink": "/pricing",
+                "ctaText": "Get Started",
+                "popular": true,
+                "features": [
+                  "50 GB SSD Storage",
+                  "Unlimited Websites",
+                  "Free SSL Certificate",
+                  "Priority Support",
+                  "Daily Backups",
+                  "Free CDN"
+                ],
+                "description": "Ideal for growing businesses and e-commerce"
+              },
+              {
+                "name": "Enterprise",
+                "price": "$24.99",
+                "period": "/month",
+                "ctaLink": "/pricing",
+                "ctaText": "Get Started",
+                "popular": false,
+                "features": [
+                  "200 GB SSD Storage",
+                  "Unlimited Websites",
+                  "Free SSL Certificate",
+                  "VIP Support",
+                  "Hourly Backups",
+                  "Free CDN + WAF",
+                  "Dedicated IP"
+                ],
+                "description": "Maximum performance for high-traffic sites"
+              }
+            ],
+            "title": "Choose Your Perfect Plan",
+            "subtitle": "Flexible hosting solutions for every need.",
+            "viewAllLink": "/pricing",
+            "viewAllText": "View All Plans & Features"
+          }
+        },
+        {
+          "id": "domain_1",
+          "type": "DomainSearch",
+          "order": 6,
+          "props": {
+            "badge": "Domain Registration",
+            "title": "Find Your Perfect Domain",
+            "subtitle": "Search and register your ideal domain name today.",
+            "buttonText": "Search",
+            "placeholder": "yourdomain.com",
+            "domainPrices": [
+              {
+                "price": "$12.99/yr",
+                "extension": ".com"
+              },
+              {
+                "price": "$14.99/yr",
+                "extension": ".net"
+              },
+              {
+                "price": "$13.99/yr",
+                "extension": ".org"
+              },
+              {
+                "price": "$39.99/yr",
+                "extension": ".io"
+              }
+            ]
+          }
+        },
+        {
+          "id": "footer_1",
+          "type": "FooterSection",
+          "order": 7,
+          "props": {
+            "logo": "WebSphere",
+            "columns": [
+              {
+                "links": [
+                  {
+                    "href": "/hosting",
+                    "label": "Web Hosting"
+                  },
+                  {
+                    "href": "/domains",
+                    "label": "Domains"
+                  },
+                  {
+                    "href": "/pricing",
+                    "label": "Pricing"
+                  }
+                ],
+                "title": "Products"
+              },
+              {
+                "links": [
+                  {
+                    "href": "/blog",
+                    "label": "Blog"
+                  },
+                  {
+                    "href": "/contact",
+                    "label": "Contact"
+                  }
+                ],
+                "title": "Company"
+              },
+              {
+                "links": [
+                  {
+                    "href": "#",
+                    "label": "Help Center"
+                  },
+                  {
+                    "href": "#",
+                    "label": "Documentation"
+                  }
+                ],
+                "title": "Support"
+              }
+            ],
+            "bottomLinks": [
+              {
+                "href": "/privacy",
+                "label": "Privacy Policy"
+              },
+              {
+                "href": "/terms",
+                "label": "Terms of Service"
+              }
+            ],
+            "description": "Enterprise-grade web hosting solutions.",
+            "socialLinks": [
+              {
+                "href": "https://twitter.com",
+                "icon": "twitter",
+                "label": "Twitter"
+              },
+              {
+                "href": "https://facebook.com",
+                "icon": "facebook",
+                "label": "Facebook"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "hosting",
+      "meta": {
+        "title": "Hosting Plans - WebSphere",
+        "keywords": [
+          "shared hosting",
+          "vps hosting"
+        ],
+        "description": "Choose from shared, VPS, or dedicated hosting plans."
+      },
+      "name": "Hosting",
+      "path": "/hosting",
+      "sections": [
+        {
+          "id": "navbar_2",
+          "type": "Navbar",
+          "order": 0,
+          "props": {
+            "links": [
+              {
+                "href": "/",
+                "label": "Home"
+              },
+              {
+                "href": "/hosting",
+                "label": "Hosting"
+              },
+              {
+                "href": "/domains",
+                "label": "Domains"
+              },
+              {
+                "href": "/pricing",
+                "label": "Pricing"
+              },
+              {
+                "href": "/blog",
+                "label": "Blog"
+              },
+              {
+                "href": "/contact",
+                "label": "Contact"
+              }
+            ],
+            "logoText": "WEBSPHERE",
+            "ctaButton": {
+              "href": "/pricing",
+              "text": "Get Started"
+            },
+            "secondaryButton": {
+              "href": "/login",
+              "text": "Sign In"
+            }
+          }
+        },
+        {
+          "id": "hero_2",
+          "type": "Hero",
+          "order": 1,
+          "props": {
+            "title": "Web Hosting Solutions",
+            "subtitle": "Choose from our range of powerful hosting plans.",
+            "backgroundStyle": "minimal"
+          }
+        },
+        {
+          "id": "features_2",
+          "type": "FeatureGrid",
+          "order": 2,
+          "props": {
+            "title": "Hosting Plans",
+            "columns": 3,
+            "features": [
+              {
+                "icon": "🚀",
+                "title": "Shared Hosting",
+                "description": "Perfect for small websites and blogs.",
+                "bulletPoints": [
+                  "1-5 Websites",
+                  "10GB-50GB SSD",
+                  "Free SSL",
+                  "24/7 Support"
+                ]
+              },
+              {
+                "icon": "⚡",
+                "title": "VPS Hosting",
+                "description": "More power and control for growing websites.",
+                "bulletPoints": [
+                  "Dedicated Resources",
+                  "100GB-500GB SSD",
+                  "Root Access",
+                  "Priority Support"
+                ]
+              },
+              {
+                "icon": "🏢",
+                "title": "Dedicated Server",
+                "description": "Maximum performance for enterprise applications.",
+                "bulletPoints": [
+                  "Full Server Control",
+                  "1TB+ SSD Storage",
+                  "Custom Configuration",
+                  "Managed Services"
+                ]
+              }
+            ],
+            "subtitle": "Find the perfect hosting solution"
+          }
+        },
+        {
+          "id": "cta_2",
+          "type": "CTA",
+          "order": 3,
+          "props": {
+            "title": "Ready to Choose Your Plan?",
+            "ctaLink": "/pricing",
+            "ctaText": "View All Pricing",
+            "variant": "websphere",
+            "subtitle": "Get started with WebSphere hosting today"
+          }
+        },
+        {
+          "id": "footer_2",
+          "type": "FooterSection",
+          "order": 4,
+          "props": {
+            "logo": "WebSphere",
+            "columns": [
+              {
+                "links": [
+                  {
+                    "href": "/hosting",
+                    "label": "Web Hosting"
+                  },
+                  {
+                    "href": "/domains",
+                    "label": "Domains"
+                  }
+                ],
+                "title": "Products"
+              }
+            ],
+            "bottomLinks": [
+              {
+                "href": "/privacy",
+                "label": "Privacy Policy"
+              }
+            ],
+            "description": "Premium web hosting solutions",
+            "socialLinks": [
+              {
+                "href": "https://twitter.com",
+                "icon": "twitter",
+                "label": "Twitter"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "domains",
+      "meta": {
+        "title": "Domain Registration - WebSphere",
+        "keywords": [
+          "domain registration"
+        ],
+        "description": "Register your perfect domain name."
+      },
+      "name": "Domains",
+      "path": "/domains",
+      "sections": [
+        {
+          "id": "navbar_3",
+          "type": "Navbar",
+          "order": 0,
+          "props": {
+            "links": [
+              {
+                "href": "/",
+                "label": "Home"
+              },
+              {
+                "href": "/hosting",
+                "label": "Hosting"
+              },
+              {
+                "href": "/domains",
+                "label": "Domains"
+              },
+              {
+                "href": "/pricing",
+                "label": "Pricing"
+              },
+              {
+                "href": "/blog",
+                "label": "Blog"
+              },
+              {
+                "href": "/contact",
+                "label": "Contact"
+              }
+            ],
+            "logoText": "WEBSPHERE",
+            "ctaButton": {
+              "href": "/pricing",
+              "text": "Get Started"
+            },
+            "secondaryButton": {
+              "href": "/login",
+              "text": "Sign In"
+            }
+          }
+        },
+        {
+          "id": "hero_3",
+          "type": "Hero",
+          "order": 1,
+          "props": {
+            "title": "Find Your Perfect Domain",
+            "subtitle": "Search and register your ideal domain name",
+            "backgroundStyle": "gradient"
+          }
+        },
+        {
+          "id": "domain_2",
+          "type": "DomainSearch",
+          "order": 2,
+          "props": {
+            "title": "Search Domain",
+            "subtitle": "Over 400+ extensions available",
+            "buttonText": "Search",
+            "placeholder": "yourdomain.com",
+            "domainPrices": [
+              {
+                "price": "$12.99/yr",
+                "extension": ".com"
+              },
+              {
+                "price": "$14.99/yr",
+                "extension": ".net"
+              },
+              {
+                "price": "$13.99/yr",
+                "extension": ".org"
+              },
+              {
+                "price": "$39.99/yr",
+                "extension": ".io"
+              },
+              {
+                "price": "$24.99/yr",
+                "extension": ".co"
+              },
+              {
+                "price": "$14.99/yr",
+                "extension": ".dev"
+              }
+            ]
+          }
+        },
+        {
+          "id": "footer_3",
+          "type": "FooterSection",
+          "order": 3,
+          "props": {
+            "logo": "WebSphere",
+            "columns": [],
+            "bottomLinks": [],
+            "description": "Premium web hosting",
+            "socialLinks": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "pricing",
+      "meta": {
+        "title": "Pricing - WebSphere",
+        "keywords": [
+          "hosting pricing"
+        ],
+        "description": "Simple, transparent pricing."
+      },
+      "name": "Pricing",
+      "path": "/pricing",
+      "sections": [
+        {
+          "id": "navbar_4",
+          "type": "Navbar",
+          "order": 0,
+          "props": {
+            "links": [
+              {
+                "href": "/",
+                "label": "Home"
+              },
+              {
+                "href": "/hosting",
+                "label": "Hosting"
+              },
+              {
+                "href": "/domains",
+                "label": "Domains"
+              },
+              {
+                "href": "/pricing",
+                "label": "Pricing"
+              },
+              {
+                "href": "/blog",
+                "label": "Blog"
+              },
+              {
+                "href": "/contact",
+                "label": "Contact"
+              }
+            ],
+            "logoText": "WEBSPHERE",
+            "ctaButton": {
+              "href": "/pricing",
+              "text": "Get Started"
+            },
+            "secondaryButton": {
+              "href": "/login",
+              "text": "Sign In"
+            }
+          }
+        },
+        {
+          "id": "hero_4",
+          "type": "Hero",
+          "order": 1,
+          "props": {
+            "title": "Simple, Transparent Pricing",
+            "subtitle": "Choose the perfect plan for your needs.",
+            "backgroundStyle": "minimal"
+          }
+        },
+        {
+          "id": "pricing_2",
+          "type": "Pricing",
+          "order": 2,
+          "props": {
+            "plans": [
+              {
+                "name": "Starter",
+                "price": "$4.99",
+                "period": "/month",
+                "ctaLink": "/pricing",
+                "ctaText": "Get Started",
+                "features": [
+                  "10 GB SSD",
+                  "1 Website",
+                  "Free SSL"
+                ]
+              },
+              {
+                "name": "Business",
+                "price": "$9.99",
+                "period": "/month",
+                "ctaLink": "/pricing",
+                "ctaText": "Get Started",
+                "popular": true,
+                "features": [
+                  "50 GB SSD",
+                  "Unlimited Sites",
+                  "Free CDN"
+                ]
+              },
+              {
+                "name": "Enterprise",
+                "price": "$24.99",
+                "period": "/month",
+                "ctaLink": "/pricing",
+                "ctaText": "Get Started",
+                "features": [
+                  "200 GB SSD",
+                  "VIP Support",
+                  "Dedicated IP"
+                ]
+              }
+            ],
+            "title": "Choose Your Plan"
+          }
+        },
+        {
+          "id": "faq_2",
+          "type": "FAQ",
+          "order": 3,
+          "props": {
+            "badge": "FAQ",
+            "items": [
+              {
+                "answer": "Yes, you can upgrade or downgrade anytime.",
+                "question": "Can I upgrade my plan later?"
+              },
+              {
+                "answer": "We accept all major credit cards and PayPal.",
+                "question": "What payment methods do you accept?"
+              },
+              {
+                "answer": "Yes, we offer a 30-day money-back guarantee.",
+                "question": "Is there a money-back guarantee?"
+              },
+              {
+                "answer": "Yes, contact our sales team for custom solutions.",
+                "question": "Do you offer custom enterprise solutions?"
+              }
+            ],
+            "title": "Frequently Asked Questions"
+          }
+        },
+        {
+          "id": "footer_4",
+          "type": "FooterSection",
+          "order": 4,
+          "props": {
+            "logo": "WebSphere",
+            "columns": [],
+            "bottomLinks": [],
+            "description": "Premium hosting",
+            "socialLinks": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "blog",
+      "meta": {
+        "title": "Blog - WebSphere",
+        "keywords": [
+          "web hosting blog"
+        ],
+        "description": "Tips and tutorials."
+      },
+      "name": "Blog",
+      "path": "/blog",
+      "sections": [
+        {
+          "id": "navbar_5",
+          "type": "Navbar",
+          "order": 0,
+          "props": {
+            "links": [
+              {
+                "href": "/",
+                "label": "Home"
+              },
+              {
+                "href": "/hosting",
+                "label": "Hosting"
+              },
+              {
+                "href": "/domains",
+                "label": "Domains"
+              },
+              {
+                "href": "/pricing",
+                "label": "Pricing"
+              },
+              {
+                "href": "/blog",
+                "label": "Blog"
+              },
+              {
+                "href": "/contact",
+                "label": "Contact"
+              }
+            ],
+            "logoText": "WEBSPHERE",
+            "ctaButton": {
+              "href": "/pricing",
+              "text": "Get Started"
+            }
+          }
+        },
+        {
+          "id": "hero_5",
+          "type": "Hero",
+          "order": 1,
+          "props": {
+            "title": "WebSphere Blog",
+            "subtitle": "Tips and tutorials",
+            "backgroundStyle": "minimal"
+          }
+        },
+        {
+          "id": "portfolio_1",
+          "type": "Portfolio",
+          "order": 2,
+          "props": {
+            "title": "Latest Articles",
+            "projects": [
+              {
+                "link": "#",
+                "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
+                "title": "10 Tips to Speed Up Your Website",
+                "category": "Performance"
+              },
+              {
+                "link": "#",
+                "image": "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80",
+                "title": "Essential Security Practices",
+                "category": "Security"
+              },
+              {
+                "link": "#",
+                "image": "https://images.unsplash.com/photo-1432888622747-4eb9a8f2c293?w=600&q=80",
+                "title": "SEO Best Practices",
+                "category": "SEO"
+              }
+            ]
+          }
+        },
+        {
+          "id": "footer_5",
+          "type": "FooterSection",
+          "order": 3,
+          "props": {
+            "logo": "WebSphere",
+            "columns": [],
+            "bottomLinks": [],
+            "description": "Premium hosting",
+            "socialLinks": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "contact",
+      "meta": {
+        "title": "Contact Us - WebSphere",
+        "keywords": [
+          "contact support"
+        ],
+        "description": "Get in touch."
+      },
+      "name": "Contact",
+      "path": "/contact",
+      "sections": [
+        {
+          "id": "navbar_6",
+          "type": "Navbar",
+          "order": 0,
+          "props": {
+            "links": [
+              {
+                "href": "/",
+                "label": "Home"
+              },
+              {
+                "href": "/hosting",
+                "label": "Hosting"
+              },
+              {
+                "href": "/domains",
+                "label": "Domains"
+              },
+              {
+                "href": "/pricing",
+                "label": "Pricing"
+              },
+              {
+                "href": "/blog",
+                "label": "Blog"
+              },
+              {
+                "href": "/contact",
+                "label": "Contact"
+              }
+            ],
+            "logoText": "WEBSPHERE",
+            "ctaButton": {
+              "href": "/pricing",
+              "text": "Get Started"
+            }
+          }
+        },
+        {
+          "id": "hero_6",
+          "type": "Hero",
+          "order": 1,
+          "props": {
+            "title": "Get in Touch",
+            "subtitle": "We are here to help",
+            "backgroundStyle": "minimal"
+          }
+        },
+        {
+          "id": "contact_1",
+          "type": "ContactForm",
+          "order": 2,
+          "props": {
+            "email": "support@websphere.com",
+            "title": "Send us a Message"
+          }
+        },
+        {
+          "id": "footer_6",
+          "type": "FooterSection",
+          "order": 3,
+          "props": {
+            "logo": "WebSphere",
+            "columns": [],
+            "bottomLinks": [],
+            "description": "Premium hosting",
+            "socialLinks": []
+          }
+        }
+      ]
+    }
+  ],
+  "sections": []
+}

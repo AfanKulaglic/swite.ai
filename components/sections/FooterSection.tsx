@@ -114,6 +114,7 @@ export function FooterSection({
                   <li key={linkIndex}>
                     <Link
                       href={link.href}
+                      prefetch={false}
                       className="text-gray-400 hover:text-[var(--color-primary,#6D28D9)] transition-colors"
                     >
                       {link.label}
@@ -136,6 +137,7 @@ export function FooterSection({
                 <Link
                   key={index}
                   href={link.href}
+                  prefetch={false}
                   className="text-gray-500 hover:text-gray-300 text-sm transition-colors"
                 >
                   {link.label}

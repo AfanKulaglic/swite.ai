@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { DynamicRenderer, getDefaultProps, getAvailableComponents } from '@/components/renderer/DynamicRenderer';
+import { MultiPageRenderer } from '@/components/renderer/MultiPageRenderer';
 import { SiteLayout, SiteTheme, SectionComponent, Database } from '@/lib/supabase/types';
 import { TemplateService } from '@/lib/services/templateService';
 import Button from '@/components/ui/Button';
@@ -22,6 +23,7 @@ function BuilderContent() {
   const [selectedSection, setSelectedSection] = useState<string | null>(null);
   const [showAddSection, setShowAddSection] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
+  const [currentPage, setCurrentPage] = useState<string>('/');
 
   useEffect(() => {
     const loadTemplate = async () => {
@@ -139,6 +141,17 @@ function BuilderContent() {
 
   const getSelectedSectionData = () => {
     if (!layout || !selectedSection) return null;
+    
+    // For multi-page layouts, search in the current page
+    if (layout.pages && layout.pages.length > 0) {
+      const page = layout.pages.find(p => p.path === currentPage);
+      if (page) {
+        return page.sections.find(s => s.id === selectedSection);
+      }
+      return null;
+    }
+    
+    // For single-page layouts
     return layout.sections.find(s => s.id === selectedSection);
   };
 
@@ -233,7 +246,37 @@ function BuilderContent() {
         {/* Canvas */}
         <div className="flex-1 overflow-y-auto bg-zinc-800 p-8">
           <div className="max-w-6xl mx-auto bg-black rounded-xl overflow-hidden shadow-2xl">
-            {layout && layout.sections.length > 0 ? (
+            {layout && layout.pages && layout.pages.length > 0 ? (
+              // Multi-page template
+              <>
+                {/* Page Navigation for Multi-page Templates */}
+                <div className="bg-zinc-900 border-b border-white/10 p-4 flex items-center gap-2 overflow-x-auto">
+                  <span className="text-white/50 text-sm mr-2">Pages:</span>
+                  {layout.pages.map((page) => (
+                    <button
+                      key={page.id}
+                      onClick={() => setCurrentPage(page.path)}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        currentPage === page.path
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-white/10 text-white hover:bg-white/20'
+                      }`}
+                    >
+                      {page.name}
+                    </button>
+                  ))}
+                </div>
+                <MultiPageRenderer
+                  layout={layout}
+                  theme={theme || undefined}
+                  editable={!previewMode}
+                  onSectionClick={handleSectionClick}
+                  currentPath={currentPage}
+                  onPageChange={setCurrentPage}
+                />
+              </>
+            ) : layout && layout.sections && layout.sections.length > 0 ? (
+              // Single-page template (legacy)
               <DynamicRenderer
                 layout={layout}
                 theme={theme || undefined}

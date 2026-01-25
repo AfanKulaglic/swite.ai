@@ -17,6 +17,7 @@ export default function RootLayout({
   const pathname = usePathname();
   const isStudioPage = pathname?.startsWith('/studio');
   const isAuthPage = pathname === '/login' || pathname === '/signup';
+  const isTemplatePage = pathname?.startsWith('/templates/');
 
   return (
     <html lang="en">
@@ -26,9 +27,9 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <AuthProvider>
-          {!isStudioPage && !isAuthPage && <Navbar />}
+          {!isStudioPage && !isAuthPage && !isTemplatePage && <Navbar />}
           <main className="relative z-10">{children}</main>
-          {!isStudioPage && !isAuthPage && <Footer />}
+          {!isStudioPage && !isAuthPage && !isTemplatePage && <Footer />}
         </AuthProvider>
       </body>
     </html>
